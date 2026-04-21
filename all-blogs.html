@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gethsemane Methodist Church</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+    <style>
+        .all-blogs-section {
+            padding: 120px 20px 80px;
+            min-height: 100vh;
+            background: #f9f9f9;
+        }
+        
+        .all-blogs-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 40px;
+        }
+        
+        /* Main Content - Blog List */
+        .blogs-main h1 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 15px;
+        }
+        
+        .blog-list-item {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .blog-list-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .blog-list-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .blog-list-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #666;
+            flex-wrap: wrap;
+        }
+        
+        .blog-list-excerpt {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .read-more-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .read-more-btn:hover {
+            background: #45a049;
+            transform: translateX(5px);
+        }
+        
+        /* Sidebar */
+        .blogs-sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+        
+        .blogs-sidebar h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+        }
+        
+        .search-box {
+            margin-bottom: 30px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        .sidebar-blog-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .sidebar-blog-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-blog-item:hover {
+            padding-left: 10px;
+            background: #f9f9f9;
+        }
+        
+        .sidebar-blog-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-blog-meta {
+            font-size: 11px;
+            color: #999;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .load-more-btn {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .load-more-btn:hover {
+            background: #1a252f;
+        }
+        
+        @media (max-width: 768px) {
+            .all-blogs-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .blogs-sidebar {
+                position: static;
+                order: 2;
+            }
+            
+            .blogs-main {
+                order: 1;
+            }
+            
+            .blog-list-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="images/logo.jpg" alt="Church Logo" class="logo-image">
+                <span class="logo-text">Gethsemane Methodist Church</span>
+            </div>
+         <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <div class="dropdown">
+                <a href="#" class="dropdown-trigger">Organizations ▼</a>
+                <div class="dropdown-menu" id="orgsDropdownMenu">
+                    <div class="loading-dropdown">Loading...</div>
+                </div>
+            </div>
+            <a href="index.html#leaders">Leaders</a>
+            <div class="dropdown">
+                <a href="#" class="dropdown-trigger">Features ▼</a>
+                <div class="dropdown-menu">
+                    <a href="index.html#features" onclick="sessionStorage.setItem('scrollTo', 'announcements')">📢 Announcements</a>
+                    <a href="index.html#features" onclick="sessionStorage.setItem('scrollTo', 'events')">📅 Events</a>
+                    <a href="all-blogs.html">📝 Blogs</a>
+                    <a href="#" onclick="openDevotionalModalFromNav(); return false;">📖 Devotional</a>
+                    <a href="index.html#gallery">🖼️ Gallery</a>
+                    <a href="#" onclick="openWeeklyOutlookModal(); return false;">📅 Weekly Outlook</a>
+                </div>
+            </div>
+        </div>
+            <button class="mobile-menu-btn" id="menuBtn">☰</button>
+        </div>
+    </nav>
+
+    <section class="all-blogs-section">
+        <div class="all-blogs-container">
+            <!-- Main Content -->
+            <div class="blogs-main">
+                <h1>📝 All Blog Posts</h1>
+                <div id="blogsListContainer">
+                    <div style="text-align: center; padding: 40px;">Loading blogs...</div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="blogs-sidebar">
+                <div class="search-box">
+                    <h3>🔍 Search Blogs</h3>
+                    <input type="text" id="searchInput" placeholder="Search by title or author..." onkeyup="searchBlogs()">
+                </div>
+                <div>
+                    <h3>📚 Recent Posts</h3>
+                    <div id="recentBlogsList">
+                        <p>Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Gethsemane Methodist Church</h3>
+                <p>Growing together in faith, love, and service.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="index.html#organizations">Organizations</a>
+                <a href="index.html#leaders">Leaders</a>
+                <a href="index.html#features">Features</a>
+            </div>
+            <div class="footer-col">
+                <h3>Contact</h3>
+                <p>📍 Baatsona, Accra</p>
+                <p>📞 (555) 123-4567</p>
+                <p>✉️ info@gethsemanemethodist.org</p>
+            </div>
+            <div class="footer-col">
+                <h3>Service Times</h3>
+                <p>Sunday: 8:00 AM</p>
+                <p>Wednesday: 7:00 PM</p>
+                <p>Friday: 5:30 PM</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Gethsemane Methodist Church, Baatsona. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <!-- Back to Top Button -->
+    <button id="backToTopBtn" class="back-to-top" title="Go to top">
+        ↑
+    </button>
+
+    <script>
+        const API_URL = 'https://church-backend-h2ch.onrender.com/api';
+        
+        let allBlogs = [];
+        let currentDisplayCount = 10;
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        async function loadAllBlogs() {
+            try {
+                const response = await fetch(`${API_URL}/blogs`);
+                if (!response.ok) throw new Error('Failed to fetch blogs');
+                allBlogs = await response.json();
+                
+                displayBlogs();
+                displayRecentBlogs();
+            } catch (error) {
+                console.error('Error loading blogs:', error);
+                document.getElementById('blogsListContainer').innerHTML = '<div class="no-results">Unable to load blogs. Please try again later.</div>';
+            }
+        }
+        
+        function displayBlogs() {
+            const container = document.getElementById('blogsListContainer');
+            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            
+            let filteredBlogs = allBlogs;
+            if (searchTerm) {
+                filteredBlogs = allBlogs.filter(blog => 
+                    blog.title.toLowerCase().includes(searchTerm) || 
+                    blog.author.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            const blogsToShow = filteredBlogs.slice(0, currentDisplayCount);
+            
+            if (blogsToShow.length === 0) {
+                container.innerHTML = '<div class="no-results">No blog posts found matching your search.</div>';
+                return;
+            }
+            
+            let html = '';
+            for (let i = 0; i < blogsToShow.length; i++) {
+                const blog = blogsToShow[i];
+                const plainTextExcerpt = blog.excerpt ? blog.excerpt.replace(/<[^>]*>/g, '') : '';
+                html += `
+                    <div class="blog-list-item" onclick="openBlog('${blog._id}')">
+                        <h2 class="blog-list-title">📝 ${escapeHtml(blog.title)}</h2>
+                        <div class="blog-list-meta">
+                            <span>✍️ ${escapeHtml(blog.author)}</span>
+                            <span>📅 ${blog.date}</span>
+                            <span>⏱️ ${blog.readTime || '5 min read'}</span>
+                        </div>
+                        <div class="blog-list-excerpt">${escapeHtml(plainTextExcerpt.substring(0, 200))}...</div>
+                        <button class="read-more-btn">Read full article →</button>
+                    </div>
+                `;
+            }
+            
+            // Add load more button if there are more blogs
+            if (filteredBlogs.length > currentDisplayCount) {
+                html += `<button class="load-more-btn" onclick="loadMoreBlogs()">Load More (${filteredBlogs.length - currentDisplayCount} remaining)</button>`;
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        function displayRecentBlogs() {
+            const container = document.getElementById('recentBlogsList');
+            const recentBlogs = allBlogs.slice(0, 5);
+            
+            if (recentBlogs.length === 0) {
+                container.innerHTML = '<p>No blogs yet.</p>';
+                return;
+            }
+            
+            let html = '<ul class="sidebar-blog-list">';
+            for (let i = 0; i < recentBlogs.length; i++) {
+                const blog = recentBlogs[i];
+                html += `
+                    <li class="sidebar-blog-item" onclick="openBlog('${blog._id}')">
+                        <div class="sidebar-blog-title">📄 ${escapeHtml(blog.title)}</div>
+                        <div class="sidebar-blog-meta">${escapeHtml(blog.author)} | ${blog.date}</div>
+                    </li>
+                `;
+            }
+            html += '</ul>';
+            container.innerHTML = html;
+        }
+        
+        function searchBlogs() {
+            currentDisplayCount = 10;
+            displayBlogs();
+        }
+        
+        function loadMoreBlogs() {
+            currentDisplayCount += 10;
+            displayBlogs();
+        }
+        
+        function openBlog(blogId) {
+            window.location.href = `blog.html?id=${blogId}`;
+        }
+        
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+        if (menuBtn) {
+            menuBtn.addEventListener('click', function() { navLinks.classList.toggle('active'); });
+        }
+        
+        // Load blogs when page loads
+        loadAllBlogs();
+    </script>
+<script>
+    // Simple direct fetch for organizations dropdown
+    (function() {
+        const dropdownMenu = document.getElementById('orgsDropdownMenu');
+        if (!dropdownMenu) return;
+        
+        fetch('http://localhost:5001/api/organizations')
+            .then(response => response.json())
+            .then(organizations => {
+                if (organizations.length === 0) {
+                    dropdownMenu.innerHTML = '<a href="index.html#organizations">No organizations yet</a>';
+                    return;
+                }
+                let html = '';
+                for (let i = 0; i < organizations.length; i++) {
+                    const org = organizations[i];
+                    const safeName = org.name.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    html += `<a href="organization.html?id=${org._id}">🏛️ ${safeName}</a>`;
+                }
+                dropdownMenu.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                dropdownMenu.innerHTML = '<a href="index.html#organizations">📋 View All Organizations</a>';
+            });
+    })();
+    // ============================================
+    // BACK TO TOP BUTTON
+    // ============================================
+
+    const backToTopBtn = document.getElementById('backToTopBtn');
+
+    function toggleBackToTopButton() {
+        if (!backToTopBtn) return;
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    }
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('scroll', toggleBackToTopButton);
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', scrollToTop);
+    }
+    toggleBackToTopButton();
+</script>>
+    <script src="script.js"></script>
+</body>
+</html>

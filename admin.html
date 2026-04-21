@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Church Admin Dashboard</title>
+    <!-- Quill Rich Text Editor CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f2f5; }
+        .admin-header { background: #2c3e50; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .logout-btn { background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        .admin-container { display: flex; min-height: calc(100vh - 80px); }
+        .sidebar { width: 250px; background: white; padding: 20px 0; }
+        .sidebar-item { padding: 15px 25px; cursor: pointer; border-left: 3px solid transparent; }
+        .sidebar-item:hover { background: #f0f2f5; }
+        .sidebar-item.active { background: #e8f5e9; border-left-color: #4CAF50; color: #4CAF50; font-weight: bold; }
+        .content-area { flex: 1; padding: 30px; overflow-y: auto; }
+        .section-title { font-size: 28px; margin-bottom: 20px; border-bottom: 2px solid #4CAF50; padding-bottom: 10px; }
+        .form-card { background: white; border-radius: 12px; padding: 25px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        .btn { background: #4CAF50; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 16px; margin-right: 10px; margin-bottom: 10px; }
+        .btn-danger { background: #e74c3c; }
+        .btn-secondary { background: #2196F3; }
+        .btn-warning { background: #FF9800; }
+        .items-list { background: white; border-radius: 12px; overflow: hidden; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #eee; flex-wrap: wrap; gap: 10px; }
+        .item-info { flex: 1; }
+        .item-title { font-weight: bold; margin-bottom: 5px; }
+        .item-meta { font-size: 12px; color: #666; }
+        .item-actions { display: flex; gap: 10px; }
+        .edit-btn, .delete-btn { padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; }
+        .edit-btn { background: #FF9800; color: white; }
+        .delete-btn { background: #e74c3c; color: white; }
+        .login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #667eea, #764ba2); }
+        .login-card { background: white; padding: 40px; border-radius: 20px; width: 100%; max-width: 400px; text-align: center; }
+        .login-card input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .hidden { display: none; }
+        .success-msg { background: #4CAF50; color: white; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center; }
+        .error-msg { color: #e74c3c; margin-top: 10px; }
+        .edit-form { background: #fff3e0; border-left: 4px solid #FF9800; margin-bottom: 20px; }
+        .cancel-edit { background: #95a5a6; }
+        .cancel-edit:hover { background: #7f8c8d; }
+        
+        /* Quill Editor Styles */
+        .quill-editor {
+            height: 300px;
+            margin-bottom: 50px;
+        }
+        .ql-container {
+            min-height: 200px;
+            font-size: 16px;
+        }
+        
+        /* Gallery Styles */
+        .album-selector { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+        .bulk-upload-area { border: 2px dashed #4CAF50; border-radius: 12px; padding: 40px; text-align: center; background: #f9f9f9; cursor: pointer; transition: all 0.3s; margin-bottom: 20px; }
+        .bulk-upload-area:hover { background: #e8f5e9; border-color: #45a049; }
+        .bulk-upload-area.dragover { background: #c8e6c9; border-color: #2e7d32; }
+        .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; max-height: 300px; overflow-y: auto; padding: 10px; background: #f9f9f9; border-radius: 8px; }
+        .preview-item { position: relative; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .preview-item img { width: 100%; height: 80px; object-fit: cover; }
+        .preview-remove { position: absolute; top: 2px; right: 2px; background: red; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 12px; }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; margin-top: 20px; }
+        .photo-item { position: relative; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .photo-item.selected { border: 3px solid #4CAF50; }
+        .photo-select { position: absolute; top: 5px; left: 5px; width: 20px; height: 20px; cursor: pointer; z-index: 10; }
+        .photo-item img { width: 100%; height: 150px; object-fit: cover; }
+        .photo-info { padding: 8px; font-size: 12px; text-align: center; background: white; }
+        .bulk-delete-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #e74c3c; color: white; padding: 12px 25px; border-radius: 50px; display: flex; gap: 15px; align-items: center; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 1000; }
+        .bulk-delete-bar button { background: white; color: #e74c3c; border: none; padding: 5px 15px; border-radius: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div id="loginScreen" class="login-screen">
+    <div class="login-card">
+        <h2>🔐 Admin Login</h2>
+        <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+        <button class="btn" onclick="login()">Login</button>
+        <div id="loginError" class="error-msg"></div>
+    </div>
+</div>
+
+<div id="adminPanel" class="hidden">
+    <div class="admin-header">
+        <h1>⛪ Gethsemane Methodist Church - Admin Dashboard</h1>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+    
+    <div class="admin-container">
+        <div class="sidebar">
+            <div class="sidebar-item" data-section="announcements">📢 Announcements</div>
+            <div class="sidebar-item" data-section="events">📅 Events</div>
+            <div class="sidebar-item" data-section="blogs">📝 Blogs</div>
+            <div class="sidebar-item" data-section="organizations">🤝 Organizations</div>
+            <div class="sidebar-item" data-section="leaders">👥 Leaders</div>
+            <div class="sidebar-item active" data-section="gallery">🖼️ Gallery</div>
+            <div class="sidebar-item" data-section="youtube">📺 YouTube</div>
+            <div class="sidebar-item" data-section="advert">📢 Advert</div>
+            <div class="sidebar-item" data-section="contacts">📞 Contacts</div>
+            <div class="sidebar-item" data-section="devotional">📖 Devotional</div>
+            <div class="sidebar-item" data-section="weekly">📅 Weekly Outlook</div>
+        </div>
+        
+        <div class="content-area" id="contentArea">
+            <div class="section-title">🖼️ Photo Gallery</div>
+            <p>Loading...</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+    const API_URL = 'https://church-backend-h2ch.onrender.com/api';
+    const ADMIN_PASSWORD = 'geth2026';
+
+    let currentSection = 'gallery';
+    let editingItem = null;
+    let currentAlbum = 'worship';
+    let selectedPhotos = new Set();
+    let pendingFiles = [];
+    
+    // Store Quill editor instances
+    let quillOrgDesc = null;
+    let quillEditOrgDesc = null;
+    let quillBlogContent = null;
+    let quillEditBlogContent = null;
+
+    const albums = ['worship', 'events', 'outreach', 'youth', 'missions'];
+    const albumNames = {
+        worship: 'Divine Services',
+        events: 'Special  Events',
+        outreach: 'Evangelism Events',
+        youth: 'Children Ministry',
+        missions: 'Missions'
+    };
+
+    function login() {
+        const password = document.getElementById('adminPassword').value;
+        if (password === ADMIN_PASSWORD) {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('adminPanel').classList.remove('hidden');
+            loadSection('gallery');
+        } else {
+            document.getElementById('loginError').textContent = 'Incorrect password';
+        }
+    }
+
+    function logout() {
+        document.getElementById('loginScreen').classList.remove('hidden');
+        document.getElementById('adminPanel').classList.add('hidden');
+        document.getElementById('adminPassword').value = '';
+    }
+
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            loadSection(item.dataset.section);
+        });
+    });
+
+    function loadSection(section) {
+        currentSection = section;
+        editingItem = null;
+        selectedPhotos.clear();
+        pendingFiles = [];
+        // Destroy Quill instances when switching sections
+        if (quillOrgDesc) { quillOrgDesc = null; }
+        if (quillEditOrgDesc) { quillEditOrgDesc = null; }
+        if (quillBlogContent) { quillBlogContent = null; }
+        if (quillEditBlogContent) { quillEditBlogContent = null; }
+        
+        switch(section) {
+            case 'announcements': loadAnnouncements(); break;
+            case 'events': loadEvents(); break;
+            case 'blogs': loadBlogs(); break;
+            case 'organizations': loadOrganizations(); break;
+            case 'leaders': loadLeaders(); break;
+            case 'gallery': loadGallery(); break;
+            case 'youtube': loadYouTube(); break;
+            case 'advert': loadAdvert(); break;
+            case 'contacts': loadContacts(); break;
+            case 'devotional': loadDevotional(); break;
+            case 'weekly': loadWeeklyOutlook(); break;
+        }
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function decodeHtml(html) {
+        if (!html) return '';
+        const txt = document.createElement('textarea');
+        txt.innerHTML = html;
+        return txt.value;
+    }
+
+    function showSuccess(message) {
+        const contentArea = document.getElementById('contentArea');
+        const successDiv = document.createElement('div');
+        successDiv.className = 'success-msg';
+        successDiv.textContent = message;
+        contentArea.insertBefore(successDiv, contentArea.firstChild);
+        setTimeout(() => successDiv.remove(), 3000);
+    }
+
+    function cancelEdit() {
+        editingItem = null;
+        loadSection(currentSection);
+    }
+
+    // ============================================
+    // GALLERY MANAGEMENT
+    // ============================================
+    async function loadGallery() {
+        try {
+            const response = await fetch(`${API_URL}/gallery`);
+            let galleryData = await response.json();
+            if (!galleryData || Object.keys(galleryData).length === 0) {
+                galleryData = {};
+                for (const album of albums) galleryData[album] = [];
+            }
+            
+            const currentPhotos = galleryData[currentAlbum] || [];
+            
+            let albumHtml = '<div class="album-selector">';
+            for (const album of albums) {
+                albumHtml += `<button class="btn ${currentAlbum === album ? 'btn-secondary' : ''}" onclick="switchAlbum('${album}')">${albumNames[album]}</button>`;
+            }
+            albumHtml += '</div>';
+            
+            let previewHtml = '';
+            if (pendingFiles.length > 0) {
+                previewHtml = '<div class="preview-grid">';
+                for (let i = 0; i < pendingFiles.length; i++) {
+                    const file = pendingFiles[i];
+                    const url = URL.createObjectURL(file);
+                    previewHtml += `
+                        <div class="preview-item">
+                            <img src="${url}">
+                            <button class="preview-remove" onclick="removePendingFile(${i})">×</button>
+                        </div>
+                    `;
+                }
+                previewHtml += '</div>';
+            }
+            
+            let photosHtml = '';
+            for (let i = 0; i < currentPhotos.length; i++) {
+                const photo = currentPhotos[i];
+                let imageUrl = photo.url;
+                if (imageUrl && !imageUrl.startsWith('http')) imageUrl = '/' + imageUrl;
+                photosHtml += `
+                    <div class="photo-item ${selectedPhotos.has(i) ? 'selected' : ''}">
+                        <input type="checkbox" class="photo-select" onchange="toggleSelectPhoto(${i})" ${selectedPhotos.has(i) ? 'checked' : ''}>
+                        <img src="${imageUrl}" onerror="this.src='https://via.placeholder.com/200x150/ccc?text=No+Image'">
+                        <div class="photo-info">${escapeHtml(photo.title || 'Photo')}<br>${photo.date || ''}</div>
+                    </div>
+                `;
+            }
+            
+            const bulkBar = selectedPhotos.size > 0 ? `
+                <div class="bulk-delete-bar">
+                    <span>${selectedPhotos.size} photo(s) selected</span>
+                    <button onclick="confirmBulkDelete()">🗑️ Delete Selected</button>
+                    <button onclick="clearSelection()">Cancel</button>
+                </div>
+            ` : '';
+            
+            document.getElementById('contentArea').innerHTML = `
+                <div class="section-title">🖼️ Photo Gallery - ${albumNames[currentAlbum]}</div>
+                ${albumHtml}
+                <div class="form-card">
+                    <h3>📤 Bulk Upload Photos</h3>
+                    <div class="bulk-upload-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                        <p>📸 Click or Drag & Drop multiple photos here</p>
+                        <p style="font-size: 12px; color: #666;">Select multiple photos at once</p>
+                    </div>
+                    <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" onchange="handleFiles(this.files)">
+                    ${previewHtml}
+                    ${pendingFiles.length > 0 ? `<button class="btn" onclick="uploadPhotos()">📤 Upload ${pendingFiles.length} Photo(s)</button>` : ''}
+                </div>
+                <h3>📷 Photos in ${albumNames[currentAlbum]} (${currentPhotos.length})</h3>
+                <div class="photo-grid">${photosHtml || '<p>No photos yet. Upload some!</p>'}</div>
+                ${bulkBar}
+            `;
+            
+            const dropZone = document.getElementById('dropZone');
+            if (dropZone) {
+                dropZone.ondragover = (e) => { e.preventDefault(); dropZone.classList.add('dragover'); };
+                dropZone.ondragleave = () => dropZone.classList.remove('dragover');
+                dropZone.ondrop = (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('dragover');
+                    handleFiles(e.dataTransfer.files);
+                };
+            }
+        } catch (error) {
+            document.getElementById('contentArea').innerHTML = `<div class="section-title">🖼️ Photo Gallery</div><p>Error: ${error.message}</p>`;
+        }
+    }
+
+    function handleFiles(files) {
+        const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+        pendingFiles = [...pendingFiles, ...imageFiles];
+        loadGallery();
+        document.getElementById('fileInput').value = '';
+    }
+
+    function removePendingFile(index) {
+        pendingFiles.splice(index, 1);
+        loadGallery();
+    }
+
+    async function uploadPhotos() {
+        if (pendingFiles.length === 0) return;
+        
+        const formData = new FormData();
+        for (const file of pendingFiles) {
+            formData.append('photos', file);
+        }
+        
+        try {
+            const response = await fetch(`${API_URL}/upload/${currentAlbum}`, {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.ok) {
+                pendingFiles = [];
+                selectedPhotos.clear();
+                loadGallery();
+                showSuccess(`✅ Successfully uploaded photos!`);
+            } else {
+                const error = await response.json();
+                alert('Upload failed: ' + error.error);
+            }
+        } catch (error) {
+            alert('Upload failed: ' + error.message);
+        }
+    }
+
+    function switchAlbum(album) {
+        currentAlbum = album;
+        selectedPhotos.clear();
+        pendingFiles = [];
+        loadGallery();
+    }
+
+    function toggleSelectPhoto(index) {
+        if (selectedPhotos.has(index)) {
+            selectedPhotos.delete(index);
+        } else {
+            selectedPhotos.add(index);
+        }
+        loadGallery();
+    }
+
+    function clearSelection() {
+        selectedPhotos.clear();
+        loadGallery();
+    }
+
+    async function confirmBulkDelete() {
+        if (selectedPhotos.size === 0) return;
+        
+        if (confirm(`Delete ${selectedPhotos.size} selected photos? This cannot be undone.`)) {
+            const indices = Array.from(selectedPhotos);
+            
+            try {
+                const response = await fetch(`${API_URL}/gallery/${currentAlbum}/bulk-delete`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ indices })
+                });
+                
+                if (response.ok) {
+                    selectedPhotos.clear();
+                    loadGallery();
+                    showSuccess(`✅ Deleted ${indices.length} photos!`);
+                } else {
+                    throw new Error('Delete failed');
+                }
+            } catch (error) {
+                alert('Delete failed: ' + error.message);
+            }
+        }
+    }
+
+    // ============================================
+    // ANNOUNCEMENTS
+    // ============================================
+    async function loadAnnouncements() {
+        try {
+            const response = await fetch(`${API_URL}/announcements`);
+            const items = await response.json();
+            
+            let itemsHtml = '';
+            for (let i = 0; i < items.length; i++) {
+                itemsHtml += `
+                    <div class="item-row">
+                        <div class="item-info">
+                            <div class="item-title">${escapeHtml(items[i].title)}</div>
+                            <div class="item-meta">${items[i].date || 'Recent'}</div>
+                            <div class="item-meta">${escapeHtml(items[i].content.substring(0, 100))}...</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="edit-btn" onclick="editAnnouncement('${items[i]._id}', '${escapeHtml(items[i].title)}', '${escapeHtml(items[i].content)}')">✏️ Edit</button>
+                            <button class="delete-btn" onclick="deleteAnnouncement('${items[i]._id}')">🗑️ Delete</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let editFormHtml = '';
+            if (editingItem && editingItem.type === 'announcement') {
+                editFormHtml = `
+                    <div class="form-card edit-form">
+                        <h3>✏️ Edit Announcement</h3>
+                        <div class="form-group"><label>Title</label><input type="text" id="editTitle" value="${escapeHtml(editingItem.title)}"></div>
+                        <div class="form-group"><label>Content</label><textarea id="editContent">${escapeHtml(editingItem.content)}</textarea></div>
+                        <button class="btn" onclick="updateAnnouncement()">💾 Save Changes</button>
+                        <button class="btn cancel-edit" onclick="cancelEdit()">❌ Cancel</button>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('contentArea').innerHTML = `
+                <div class="section-title">📢 Announcements</div>
+                ${editFormHtml}
+                <div class="form-card">
+                    <h3>➕ Add New Announcement</h3>
+                    <div class="form-group"><label>Title</label><input type="text" id="annTitle"></div>
+                    <div class="form-group"><label>Content</label><textarea id="annContent"></textarea></div>
+                    <button class="btn" onclick="addAnnouncement()">Add Announcement</button>
+                </div>
+                <h3>📋 Existing Announcements (${items.length})</h3>
+                <div class="items-list">${itemsHtml || '<div class="item-row">No announcements yet</div>'}</div>
+            `;
+        } catch (error) {
+            document.getElementById('contentArea').innerHTML = `<div class="section-title">📢 Announcements</div><p>Error: ${error.message}</p>`;
+        }
+    }
+
+    function editAnnouncement(id, title, content) {
+        editingItem = { type: 'announcement', id, title: decodeHtml(title), content: decodeHtml(content) };
+        loadAnnouncements();
+    }
+
+    async function updateAnnouncement() {
+        const title = document.getElementById('editTitle').value;
+        const content = document.getElementById('editContent').value;
+        if (!title || !content) { alert('Fill all fields'); return; }
+        try {
+            await fetch(`${API_URL}/announcements/${editingItem.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, content })
+            });
+            cancelEdit();
+            loadAnnouncements();
+            showSuccess('Announcement updated!');
+        } catch (error) { alert('Error: ' + error.message); }
+    }
+
+    async function addAnnouncement() {
+        const title = document.getElementById('annTitle').value;
+        const content = document.getElementById('annContent').value;
+        if (!title || !content) { alert('Fill all fields'); return; }
+        try {
+            await fetch(`${API_URL}/announcements`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, content })
+            });
+            loadAnnouncements();
+            showSuccess('Announcement added!');
+        } catch (error) { alert('Error: ' + error.message); }
+    }
+
+    async function deleteAnnouncement(id) {
+        if (!confirm('Delete this announcement?')) return;
+        await fetch(`${API_URL}/announcements/${id}`, { method: 'DELETE' });
+        loadAnnouncements();
+        showSuccess('Deleted!');
+    }
+
+    // ============================================
+    // EVENTS
+    // ============================================
+    async function loadEvents() {
+        try {
+            const response = await fetch(`${API_URL}/events`);
+            const items = await response.json();
+            
+            let itemsHtml = '';
+            for (let i = 0; i < items.length; i++) {
+                itemsHtml += `
+                    <div class="item-row">
+                        <div class="item-info">
+                            <div class="item-title">${escapeHtml(items[i].title)}</div>
+                            <div class="item-meta">📅 ${items[i].date} | ⏰ ${items[i].time}</div>
+                            <div class="item-meta">${escapeHtml(items[i].description.substring(0, 80))}...</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="edit-btn" onclick="editEvent('${items[i]._id}', '${escapeHtml(items[i].title)}', '${escapeHtml(items[i].poster)}', '${escapeHtml(items[i].date)}', '${escapeHtml(items[i].time)}', '${escapeHtml(items[i].description)}')">✏️ Edit</button>
+                            <button class="delete-btn" onclick="deleteEvent('${items[i]._id}')">🗑️ Delete</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let editFormHtml = '';
+            if (editingItem && editingItem.type === 'event') {
+                editFormHtml = `
+                    <div class="form-card edit-form">
+                        <h3>✏️ Edit Event</h3>
+                        <div class="form-group"><label>Title</label><input type="text" id="editTitle" value="${escapeHtml(editingItem.title)}"></div>
+                        <div class="form-group"><label>Poster Path</label><input type="text" id="editPoster" value="${escapeHtml(editingItem.poster)}"></div>
+                        <div class="form-group"><label>Date</label><input type="text" id="editDate" value="${escapeHtml(editingItem.date)}"></div>
+                        <div class="form-group"><label>Time</label><input type="text" id="editTime" value="${escapeHtml(editingItem.time)}"></div>
+                        <div class="form-group"><label>Description</label><textarea id="editDesc">${escapeHtml(editingItem.description)}</textarea></div>
+                        <button class="btn" onclick="updateEvent()">💾 Save Changes</button>
+                        <button class="btn cancel-edit" onclick="cancelEdit()">❌ Cancel</button>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('contentArea').innerHTML = `
+                <div class="section-title">📅 Events</div>
+                ${editFormHtml}
+                <div class="form-card">
+                    <h3>➕ Add New Event</h3>
+                    <div class="form-group"><label>Title</label><input type="text" id="eventTitle"></div>
+                    <div class="form-group"><label>Poster Path</label><input type="text" id="eventPoster" placeholder="Events/filename.jpg"></div>
+                    <div class="form-group"><label>Date</label><input type="text" id="eventDate" placeholder="April 20, 2026"></div>
+                    <div class="form-group"><label>Time</label><input type="text" id="eventTime" placeholder="10:00 AM"></div>
+                    <div class="form-group"><label>Description</label><textarea id="eventDesc"></textarea></div>
+                    <button class="btn" onclick="addEvent()">Add Event</button>
+                </div>
+                <h3>📋 Existing Events (${items.length})</h3>
+                <div class="items-list">${itemsHtml || '<div class="item-row">No events yet</div>'}</div>
+            `;
+        } catch (error) {
+            document.getElementById('contentArea').innerHTML = `<div class="section-title">📅 Events</div><p>Error: ${error.message}</p>`;
+        }
+    }
+
+    function editEvent(id, title, poster, date, time, description) {
+        editingItem = { 
+            type: 'event', 
+            id, 
+            title: decodeHtml(title), 
+            poster: decodeHtml(poster), 
+            date: decodeHtml(date), 
+            time: decodeHtml(time), 
+            description: decodeHtml(description) 
+        };
+        loadEvents();
+    }
+
+    async function updateEvent() {
+        let posterPath = document.getElementById('editPoster').value;
+        posterPath = posterPath.replace(/\\/g, '/');
+        
+        const eventData = {
+            title: document.getElementById('editTitle').value,
+            poster: posterPath,
+            date: document.getElementById('editDate').value,
+            time: document.getElementById('editTime').value,
+            description: document.getElementById('editDesc').value
+        };
+        try {
+            await fetch(`${API_URL}/events/${editingItem.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(eventData)
+            });
+            cancelEdit();
+            loadEvents();
+            showSuccess('Event updated!');
+        } catch (error) { alert('Error: ' + error.message); }
+    }
+
+    async function addEvent() {
+        let posterPath = document.getElementById('eventPoster').value;
+        posterPath = posterPath.replace(/\\/g, '/');
+        
+        const eventData = {
+            title: document.getElementById('eventTitle').value,
+            poster: posterPath,
+            date: document.getElementById('eventDate').value,
+            time: document.getElementById('eventTime').value,
+            description: document.getElementById('eventDesc').value
+        };
+        
+        if (!eventData.title || !eventData.date || !eventData.time || !eventData.description) {
+            alert('Please fill all required fields');
+            return;
+        }
+        
+        try {
+            await fetch(`${API_URL}/events`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(eventData)
+            });
+            loadEvents();
+            showSuccess('Event added!');
+        } catch (error) { alert('Error: ' + error.message); }
+    }
+
+    async function deleteEvent(id) {
+        if (!confirm('Delete this event?')) return;
+        await fetch(`${API_URL}/events/${id}`, { method: 'DELETE' });
+        loadEvents();
+        showSuccess('Event deleted!');
+    }
+    // ============================================
+// ============================================
+// DEVOTIONAL MANAGEMENT
+// ============================================
+async function loadDevotional() {
+    try {
+        const response = await fetch(`${API_URL}/devotional`);
+        const devotional = await response.json();
+        
+        const html = `
+            <div class="section-title">📖 Daily Devotional</div>
+            <div class="form-card">
+                <h3>📝 Update Devotional</h3>
+                <div class="form-group">
+                    <label>Devotional Image URL</label>
+                    <input type="text" id="devotionalImageUrl" value="${escapeHtml(devotional.imageUrl)}" placeholder="https://example.com/devotional.jpg">
+                    <small>Enter the full URL or path to your devotional image.</small>
+                </div>
+                <div class="form-group">
+                    <label>Title (optional)</label>
+                    <input type="text" id="devotionalTitle" value="${escapeHtml(devotional.title)}" placeholder="Daily Devotional">
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="text" id="devotionalDate" value="${devotional.date || new Date().toLocaleDateString()}" placeholder="April 18, 2026">
+                </div>
+                <div class="form-group">
+                    <label>Preview</label>
+                    <div id="devotionalPreview">
+                        <img src="${devotional.imageUrl}" style="max-width: 200px; max-height: 200px; border-radius: 10px;" onerror="this.src='https://via.placeholder.com/200x200/ccc?text=Preview'">
+                    </div>
+                </div>
+                <button class="btn" onclick="updateDevotional()">💾 Save Devotional</button>
+            </div>
+            <div class="form-card">
+                <h3>📋 How to Update Devotional</h3>
+                <p>1. Prepare your devotional image (recommended size: 400x500 pixels)</p>
+                <p>2. Upload the image to your <strong>images/</strong> folder</p>
+                <p>3. Enter the image path (e.g., <strong>images/devotional.jpg</strong>)</p>
+                <p>4. Click "Save Devotional"</p>
+            </div>
+        `;
+        
+        document.getElementById('contentArea').innerHTML = html;
+        
+        // Add preview update separately
+        const urlInput = document.getElementById('devotionalImageUrl');
+        if (urlInput) {
+            urlInput.addEventListener('input', function() {
+                const previewDiv = document.getElementById('devotionalPreview');
+                if (previewDiv) {
+                    previewDiv.innerHTML = `<img src="${this.value}" style="max-width: 200px; max-height: 200px; border-radius: 10px;" onerror="this.src='https://via.placeholder.com/200x200/ccc?text=Invalid+URL'">`;
+                }
+            });
+        }
+        
+    } catch (error) {
+        document.getElementById('contentArea').innerHTML = `<div class="section-title">📖 Daily Devotional</div><p>Error: ${error.message}</p>`;
+    }
+}
+
+async function updateDevotional() {
+    const imageUrl = document.getElementById('devotionalImageUrl').value;
+    const title = document.getElementById('devotionalTitle').value;
+    const date = document.getElementById('devotionalDate').value;
+    
+    if (!imageUrl) {
+        alert('Please enter an image URL');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/devotional`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageUrl, title, date })
+        });
+        
+        if (response.ok) {
+            loadDevotional();
+            showSuccess('Devotional updated successfully!');
+        } else {
+            alert('Error updating devotional');
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+}
+
+// ============================================
+// WEEKLY OUTLOOK MANAGEMENT
+// ============================================
+async function loadWeeklyOutlook() {
+    try {
+        const response = await fetch(`${API_URL}/weekly-outlook`);
+        const weekly = await response.json();
+        
+        document.getElementById('contentArea').innerHTML = `
+            <div class="section-title">📅 Weekly Outlook</div>
+            <div class="form-card">
+                <h3>📝 Update Weekly Outlook</h3>
+                <div class="form-group">
+                    <label>PDF File URL</label>
+                    <input type="text" id="weeklyPdfUrl" value="${escapeHtml(weekly.pdfUrl || '')}" placeholder="pdfs/weekly-outlook.pdf">
+                    <small>Upload PDF to your <strong>pdfs/</strong> folder first, then enter the path here.</small>
+                </div>
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="weeklyTitle" value="${escapeHtml(weekly.title || 'Weekly Outlook')}" placeholder="Weekly Outlook">
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="text" id="weeklyDate" value="${weekly.date || new Date().toLocaleDateString()}" placeholder="April 19, 2026">
+                </div>
+                <div class="form-group">
+                    <label>Description (optional)</label>
+                    <textarea id="weeklyDescription" placeholder="Brief description...">${escapeHtml(weekly.description || '')}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Preview</label>
+                    ${weekly.pdfUrl ? `<div id="weeklyPreview"><a href="${weekly.pdfUrl}" target="_blank">📄 View Current PDF</a></div>` : '<div id="weeklyPreview">No PDF uploaded yet</div>'}
+                </div>
+                <button class="btn" onclick="updateWeeklyOutlook()">💾 Save Weekly Outlook</button>
+            </div>
+            <div class="form-card">
+                <h3>📋 How to Upload Weekly Outlook</h3>
+                <p>1. Create a folder called <strong>pdfs/</strong> in your website folder</p>
+                <p>2. Upload your PDF file to the <strong>pdfs/</strong> folder</p>
+                <p>3. Enter the path: <strong>pdfs/your-filename.pdf</strong></p>
+                <p>4. Click "Save Weekly Outlook"</p>
+                <p>5. The weekly outlook will appear on the website in the Features section (right column)</p>
+            </div>
+        `;
+        
+        // Add preview update on input change
+        const urlInput = document.getElementById('weeklyPdfUrl');
+        if (urlInput) {
+            urlInput.addEventListener('input', function() {
+                const preview = document.getElementById('weeklyPreview');
+                if (preview && this.value) {
+                    preview.innerHTML = `<a href="${this.value}" target="_blank">📄 View Current PDF</a>`;
+                } else if (preview) {
+                    preview.innerHTML = 'No PDF uploaded yet';
+                }
+            });
+        }
+    } catch (error) {
+        document.getElementById('contentArea').innerHTML = `<div class="section-title">📅 Weekly Outlook</div><p>Error: ${error.message}</p>`;
+    }
+}
+
+async function updateWeeklyOutlook() {
+    const pdfUrl = document.getElementById('weeklyPdfUrl').value;
+    const title = document.getElementById('weeklyTitle').value;
+    const date = document.getElementById('weeklyDate').value;
+    const description = document.getElementById('weeklyDescription').value;
+    
+    if (!pdfUrl) {
+        alert('Please enter a PDF URL');
+        return;
+    }
+    
+    if (!title) {
+        alert('Please enter a title');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/weekly-outlook`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pdfUrl, title, date, description })
+        });
+        
+        if (response.ok) {
+            loadWeeklyOutlook();
+            showSuccess('Weekly Outlook updated successfully!');
+        } else {
+            alert('Error updating weekly outlook');
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+}
+    // ============================================
+    // BLOGS WITH QUILL EDITOR
+    // ============================================
+    async function loadBlogs() {
+        try {
+            const response = await fetch(`${API_URL}/blogs`);
+            const items = await response.json();
+            
+            let itemsHtml = '';
+            for (let i = 0; i < items.length; i++) {
+                itemsHtml += `
+                    <div class="item-row" data-blog-id="${items[i]._id}" data-blog-title="${escapeHtml(items[i].title)}" data-blog-author="${escapeHtml(items[i].author)}" data-blog-date="${escapeHtml(items[i].date)}" data-blog-excerpt="${escapeHtml(items[i].excerpt)}" data-blog-readtime="${escapeHtml(items[i].readTime || '5 min read')}" data-blog-content="${escapeHtml(items[i].content || '')}">
+                        <div class="item-info">
+                            <div class="item-title">${escapeHtml(items[i].title)}</div>
+                            <div class="item-meta">✍️ ${escapeHtml(items[i].author)} | 📅 ${items[i].date} | ⏱️ ${items[i].readTime || '5 min read'}</div>
+                            <div class="item-meta">${escapeHtml(items[i].excerpt.substring(0, 100))}...</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="edit-btn" onclick="editBlogFromRow(this)">✏️ Edit</button>
+                            <button class="delete-btn" onclick="deleteBlog('${items[i]._id}')">🗑️ Delete</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let editFormHtml = '';
+            if (editingItem && editingItem.type === 'blog') {
+                editFormHtml = `
+                    <div class="form-card edit-form">
+                        <h3>✏️ Edit Blog Post</h3>
+                        <div class="form-group"><label>Title</label><input type="text" id="editTitle" value="${escapeHtml(editingItem.title)}"></div>
+                        <div class="form-group"><label>Author</label><input type="text" id="editAuthor" value="${escapeHtml(editingItem.author)}"></div>
+                        <div class="form-group"><label>Date</label><input type="text" id="editDate" value="${escapeHtml(editingItem.date)}"></div>
+                        <div class="form-group"><label>Read Time</label><input type="text" id="editReadTime" value="${escapeHtml(editingItem.readTime)}"></div>
+                        <div class="form-group"><label>Excerpt</label><textarea id="editExcerpt">${escapeHtml(editingItem.excerpt)}</textarea></div>
+                        <div class="form-group"><label>Full Content</label><div id="editQuillEditor" class="quill-editor"></div></div>
+                        <button class="btn" onclick="updateBlog()">💾 Save Changes</button>
+                        <button class="btn cancel-edit" onclick="cancelEdit()">❌ Cancel</button>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('contentArea').innerHTML = `
+                <div class="section-title">📝 Blogs</div>
+                ${editFormHtml}
+                <div class="form-card">
+                    <h3>➕ Add New Blog Post</h3>
+                    <div class="form-group"><label>Title</label><input type="text" id="blogTitle"></div>
+                    <div class="form-group"><label>Author</label><input type="text" id="blogAuthor"></div>
+                    <div class="form-group"><label>Date</label><input type="text" id="blogDate" placeholder="March 15, 2026"></div>
+                    <div class="form-group"><label>Read Time</label><input type="text" id="blogReadTime" placeholder="5 min read"></div>
+                    <div class="form-group"><label>Excerpt</label><textarea id="blogExcerpt" placeholder="Brief summary..."></textarea></div>
+                    <div class="form-group"><label>Full Content</label><div id="blogQuillEditor" class="quill-editor"></div></div>
+                    <button class="btn" onclick="addBlog()">Add Blog Post</button>
+                </div>
+                <h3>📋 Existing Blogs (${items.length})</h3>
+                <div class="items-list">${itemsHtml || '<div class="item-row">No blogs yet</div>'}</div>
+            `;
+            
+            // Initialize Quill for add form
+            if (!quillBlogContent && document.getElementById('blogQuillEditor')) {
+                quillBlogContent = new Quill('#blogQuillEditor', {
+                    theme: 'snow',
+                    placeholder: 'Write your blog content here...',
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote', 'code-block'],
+                            [{ 'header': 1 }, { 'header': 2 }],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            [{ 'script': 'sub'}, { 'script': 'super' }],
+                            [{ 'indent': '-1'}, { 'indent': '+1' }],
+                            [{ 'direction': 'rtl' }],
+                            [{ 'size': ['small', false, 'large', 'huge'] }],
+                            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                            [{ 'color': [] }, { 'background': [] }],
+                            [{ 'font': [] }],
+                            [{ 'align': [] }],
+                            ['clean'],
+                            ['link', 'image', 'video']
+                        ]
+                    }
+                });
+            }
+            
+            // Initialize Quill for edit form
+            if (!quillEditBlogContent && document.getElementById('editQuillEditor') && editingItem && editingItem.type === 'blog') {
+                quillEditBlogContent = new Quill('#editQuillEditor', {
+                    theme: 'snow',
+                    placeholder: 'Write your blog content here...',
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote', 'code-block'],
+                            [{ 'header': 1 }, { 'header': 2 }],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            [{ 'script': 'sub'}, { 'script': 'super' }],
+                            [{ 'indent': '-1'}, { 'indent': '+1' }],
+                            [{ 'direction': 'rtl' }],
+                            [{ 'size': ['small', false, 'large', 'huge'] }],
+                            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                            [{ 'color': [] }, { 'background': [] }],
+                            [{ 'font': [] }],
+                            [{ 'align': [] }],
+                            ['clean'],
+                            ['link', 'image', 'video']
+                        ]
+                    }
+                });
+                quillEditBlogContent.root.innerHTML = editingItem.content || '';
+            }
+        } catch (error) {
+            document.getElementById('contentArea').innerHTML = `<div class="section-title">📝 Blogs</div><p>Error: ${error.message}</p>`;
+        }
+    }
+
+    function editBlogFromRow(button) {
+        const row = button.closest('.item-row');
+        const id = row.getAttribute('data-blog-id');
+        const title = decodeHtml(row.getAttribute('data-blog-title'));
+        const author = decodeHtml(row.getAttribute('data-blog-author'));
+        const date = decodeHtml(row.getAttribute('data-blog-date'));
+        const excerpt = decodeHtml(row.getAttribute('data-blog-excerpt'));
+        const readTime = decodeHtml(row.getAttribute('data-blog-readtime'));
+        const content = decodeHtml(row.getAttribute('data-blog-content'));
+        
+        editingItem = { type: 'blog', id, title, author, date, excerpt, readTime, content };
+        loadBlogs();
+    }
+
+    async function updateBlog() {
+        let content = '';
+        if (quillEditBlogContent) {
+            content = quillEditBlogContent.root.innerHTML;
+        }
+        
+        const blogData = {
+            title: document.getElementById('editTitle').value,
+            author: document.getElementById('editAuthor').value,
+            date: document.getElementById('editDate').value,
+            excerpt: document.getElementById('editExcerpt').value,
+            readTime: document.getElementById('editReadTime').value || '5 min read',
+            content: content
+        };
+        
+        if (!blogData.title || !blogData.author || !blogData.date || !blogData.excerpt) {
+            alert('Please fill title, author, date, and excerpt');
+            return;
+        }
+        
+        try {
+            await fetch(`${API_URL}/blogs/${editingItem.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(blogData)
+            });
+            cancelEdit();
+            loadBlogs();
+            showSuccess('Blog updated!');
+        } catch (error) { alert('Error: ' + error.message); }
+    }
+
+    async function addBlog() {
+        let content = '';
+        if (quillBlogContent) {
+            content = quillBlogContent.root.innerHTML;
+        }
+        
+        const blogData = {
+            title: document.getElementById('blogTitle').value,
+            author: document.getElementById('blogAuthor').value,
+            date: document.getElementById('blogDate').value,
+            excerpt: document.getElementById('blogExcerpt').value,
+            readTime: document.getElementById('blogReadTime').value || '5 min read',
+            content: content
+        };
+        
+        if (!blogData.title || !blogData.author || !blogData.date || !blogData.excerpt) {
+            alert('Please fill title, author, date, and excerpt');
+            return;
+        }
+        
+        try {
+            await fetch(`${API_URL}/blogs`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(blogData)
+            });
+            if (quillBlogContent) {
+                quillBlogContent.root.innerHTML = '';
+            }
+            document.getElementById('blogTitle').value = '';
+            document.getElementById('blogAuthor').value = '';
+            document.getElementById('blogDate').value = '';
+            document.getElementById('blogExcerpt').value = '';
+            document.getElementById('blogReadTime').value = '';
+            loadBlogs();
+            showSuccess('Blog added!');
+        } catch (error) { alert('Error: ' + error.message); }
+    }
+
+    async function deleteBlog(id) {
+        if (!confirm('Delete this blog post?')) return;
+        await fetch(`${API_URL}/blogs/${id}`, { method: 'DELETE' });
+        loadBlogs();
+        showSuccess('Blog deleted!');
+    }
+
+    // ============================================
+    // ORGANIZATIONS WITH QUILL EDITOR
+    // ============================================
+    async function loadOrganizations() {
+        try {
+            const response = await fetch(`${API_URL}/organizations`);
+            const items = await response.json();
+            
+            let itemsHtml = '';
+            for (let i = 0; i < items.length; i++) {
+                itemsHtml += `
+                    <div class="item-row" data-org-id="${items[i]._id}" data-org-name="${escapeHtml(items[i].name)}" data-org-meeting="${escapeHtml(items[i].meeting)}" data-org-description="${escapeHtml(items[i].description)}" data-org-leader="${escapeHtml(items[i].leader)}" data-org-location="${escapeHtml(items[i].location)}" data-org-email="${escapeHtml(items[i].email)}" data-org-logo="${escapeHtml(items[i].logoLarge)}">
+                        <div class="item-info">
+                            <div class="item-title">${escapeHtml(items[i].name)}</div>
+                            <div class="item-meta">📅 ${escapeHtml(items[i].meeting)} | 👤 ${escapeHtml(items[i].leader)}</div>
+                            <div class="item-meta">📍 ${escapeHtml(items[i].location)}</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="edit-btn" onclick="editOrgFromRow(this)">✏️ Edit</button>
+                            <button class="delete-btn" onclick="deleteOrganization('${items[i]._id}')">🗑️ Delete</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let editFormHtml = '';
+            if (editingItem && editingItem.type === 'organization') {
+                editFormHtml = `
+                    <div class="form-card edit-form">
+                        <h3>✏️ Edit Organization</h3>
+                        <div class="form-group"><label>Name</label><input type="text" id="editName" value="${escapeHtml(editingItem.name)}"></div>
+                        <div class="form-group"><label>Meeting Time</label><input type="text" id="editMeeting" value="${escapeHtml(editingItem.meeting)}"></div>
+                        <div class="form-group"><label>Description</label><div id="editOrgQuillEditor" class="quill-editor"></div></div>
+                        <div class="form-group"><label>Leader</label><input type="text" id="editLeader" value="${escapeHtml(editingItem.leader)}"></div>
+                        <div class="form-group"><label>Location</label><input type="text" id="editLocation" value="${escapeHtml(editingItem.location)}"></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="editEmail" value="${escapeHtml(editingItem.email)}"></div>
+                        <div class="form-group"><label>Logo Path</label><input type="text" id="editLogo" value="${escapeHtml(editingItem.logo)}"></div>
+                        <button class="btn" onclick="updateOrganization()">💾 Save Changes</button>
+                        <button class="btn cancel-edit" onclick="cancelEdit()">❌ Cancel</button>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('contentArea').innerHTML = `
+                <div class="section-title">🤝 Organizations</div>
+                ${editFormHtml}
+                <div class="form-card">
+                    <h3>➕ Add New Organization</h3>
+                    <div class="form-group"><label>Name</label><input type="text" id="orgName"></div>
+                    <div class="form-group"><label>Meeting Time</label><input type="text" id="orgMeeting"></div>
+                    <div class="form-group"><label>Description</label><div id="orgQuillEditor" class="quill-editor"></div></div>
+                    <div class="form-group"><label>Leader</label><input type="text" id="orgLeader"></div>
+                    <div class="form-group"><label>Location</label><input type="text" id="orgLocation"></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="orgEmail"></div>
+                    <div class="form-group"><label>Logo Path</label><input type="text" id="orgLogo" placeholder="images/logo.jpg"></div>
+                    <button class="btn" onclick="addOrganization()">Add Organization</button>
+                </div>
+                <h3>📋 Existing Organizations (${items.length})</h3>
+                <div class="items-list">${itemsHtml || '<div class="item-row">No organizations yet</div>'}</div>
+            `;
+            
+            // Initialize Quill for add form
+            if (!quillOrgDesc && document.getElementById('orgQuillEditor')) {
+                quillOrgDesc = new Quill('#orgQuillEditor', {
+                    theme: 'snow',
+                    placeholder: 'Enter organization description...',
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote', 'code-block'],
+                            [{ 'header': 1 }, { 'header': 2 }],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            [{ 'indent': '-1'}, { 'indent': '+1' }],
+                            [{ 'align': [] }],
+                            ['clean'],
+                            ['link']
+                        ]
+                    }
+                });
+            }
+            
+            // Initialize Quill for edit form
+            if (!quillEditOrgDesc && document.getElementById('editOrgQuillEditor') && editingItem && editingItem.type === 'organization') {
+                quillEditOrgDesc = new Quill('#editOrgQuillEditor', {
+                    theme: 'snow',
+                    placeholder: 'Enter organization description...',
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote', 'code-block'],
+                            [{ 'header': 1 }, { 'header': 2 }],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            [{ 'indent': '-1'}, { 'indent': '+1' }],
+                            [{ 'align': [] }],
+                            ['clean'],
+                            ['link']
+                        ]
+                    }
+                });
+                quillEditOrgDesc.root.innerHTML = editingItem.description || '';
+            }
+        } catch (error) {
+            document.getElementById('contentArea').innerHTML = `<div class="section-title">🤝 Organizations</div><p>Error: ${error.message}</p>`;
+        }
+    }
+
+    function editOrgFromRow(button) {
+        const row = button.closest('.item-row');
+        const id = row.getAttribute('data-org-id');
+        const name = decodeHtml(row.getAttribute('data-org-name'));
+        const meeting = decodeHtml(row.getAttribute('data-org-meeting'));
+        const description = decodeHtml(row.getAttribute('data-org-description'));
+        const leader = decodeHtml(row.getAttribute('data-org-leader'));
+        const location = decodeHtml(row.getAttribute('data-org-location'));
+        const email = decodeHtml(row.getAttribute('data-org-email'));
+        const logo = decodeHtml(row.getAttribute('data-org-logo'));
+        
+        editingItem = { type: 'organization', id, name, meeting, description, leader, location, email, logo };
+        loadOrganizations();
+    }
+
+    async function updateOrganization() {
+        let description = '';
+        if (quillEditOrgDesc) {
+            description = quillEditOrgDesc.root.innerHTML;
+        }
+        
+        const orgData = {
+            name: document.getElementById('editName').value,
+            meeting: document.getElementById('editMeeting').value,
+            description: description,
+            leader: document.getElementById('editLeader').value,
+            location: document.getElementById('editLocation').value,
+            email: document.getElementById('editEmail').value,
+            logoLarge: document.getElementById('editLogo').value,
+            icon: document.getElementById('editLogo').value ? `<img src='${document.getElementById('editLogo').value}' class='org-logo'>` : '📌'
+        };
+        
+        try {
+            await fetch(`${API_URL}/organizations/${editingItem.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orgData)
+            });
+            cancelEdit();
+            loadOrganizations();
+            showSuccess('Organization updated!');
+        } catch (error) { alert('Error: ' + error.message); }
+    }
+
+    async function addOrganization() {
+        let description = '';
+        if (quillOrgDesc) {
+            description = quillOrgDesc.root.innerHTML;
+        }
+        
+        const orgData = {
+            name: document.getElementById('orgName').value,
+            meeting: document.getElementById('orgMeeting').value,
+            description: description,
+            leader: document.getElementById('orgLeader').value,
+            location: document.getElementById('orgLocation').value,
+            email: document.getElementById('orgEmail').value,
+            logoLarge: document.getElementById('orgLogo').value,
+            icon: document.getElementById('orgLogo').value ? `<img src='${document.getElementById('orgLogo').value}' class='org-logo'>` : '📌'
+        };
+        
+        if (!orgData.name || !orgData.meeting || !orgData.description || !orgData.leader || !orgData.location || !orgData.email) {
+            alert('Please fill all required fields');
+            return;
+        }
+        
+        try {
+            await fetch(`${API_URL}/organizations`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orgData)
+            });
+            if (quillOrgDesc) {
+                quillOrgDesc.root.innerHTML = '';
+            }
+            document.getElementById('orgName').value = '';
+            document.getElementById('orgMeeting').value = '';
+            document.getElementById('orgLeader').value = '';
+            document.getElementById('orgLocation').value = '';
+            document.getElementById('orgEmail').value = '';
+            document.getElementById('orgLogo').value = '';
+            loadOrganizations();
+            showSuccess('Organization added!');
+        } catch (error) { alert('Error: ' + error.message); }
+    }
+
+    async function deleteOrganization(id) {
+        if (!confirm('Delete this organization?')) return;
+        await fetch(`${API_URL}/organizations/${id}`, { method: 'DELETE' });
+        loadOrganizations();
+        showSuccess('Organization deleted!');
+    }
+
+    // ============================================
+    // LEADERS
+    // ============================================
+    async function loadLeaders() {
+        try {
+            const response = await fetch(`${API_URL}/leaders`);
+            const items = await response.json();
+            
+            let itemsHtml = '';
+            for (let i = 0; i < items.length; i++) {
+                itemsHtml += `
+                    <div class="item-row" data-leader-id="${items[i]._id}" data-leader-name="${escapeHtml(items[i].name)}" data-leader-title="${escapeHtml(items[i].title)}" data-leader-bio="${escapeHtml(items[i].bio)}" data-leader-photo="${escapeHtml(items[i].photo)}" data-leader-phone="${escapeHtml(items[i].phone)}">
+                        <div class="item-info">
+                            <div class="item-title">${escapeHtml(items[i].name)}</div>
+                            <div class="item-meta">📌 ${escapeHtml(items[i].title)} | 📞 ${escapeHtml(items[i].phone || 'No phone')}</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="edit-btn" onclick="editLeaderFromRow(this)">✏️ Edit</button>
+                            <button class="delete-btn" onclick="deleteLeader('${items[i]._id}')">🗑️ Delete</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let editFormHtml = '';
+            if (editingItem && editingItem.type === 'leader') {
+                editFormHtml = `
+                    <div class="form-card edit-form">
+                        <h3>✏️ Edit Leader</h3>
+                        <div class="form-group"><label>Name</label><input type="text" id="editName" value="${escapeHtml(editingItem.name)}"></div>
+                        <div class="form-group"><label>Title</label><input type="text" id="editTitle" value="${escapeHtml(editingItem.title)}"></div>
+                        <div class="form-group"><label>Bio</label><textarea id="editBio">${escapeHtml(editingItem.bio)}</textarea></div>
+                        <div class="form-group"><label>Photo Path</label><input type="text" id="editPhoto" value="${escapeHtml(editingItem.photo)}"></div>
+                        <div class="form-group"><label>Phone</label><input type="text" id="editPhone" value="${escapeHtml(editingItem.phone)}"></div>
+                        <button class="btn" onclick="updateLeader()">💾 Save Changes</button>
+                        <button class="btn cancel-edit" onclick="cancelEdit()">❌ Cancel</button>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('contentArea').innerHTML = `
+                <div class="section-title">👥 Leaders</div>
+                ${editFormHtml}
+                <div class="form-card">
+                    <h3>➕ Add New Leader</h3>
+                    <div class="form-group"><label>Name</label><input type="text" id="leaderName"></div>
+                    <div class="form-group"><label>Title</label><input type="text" id="leaderTitle"></div>
+                    <div class="form-group"><label>Bio</label><textarea id="leaderBio"></textarea></div>
+                    <div class="form-group"><label>Photo Path</label><input type="text" id="leaderPhoto" placeholder="Leaderspics/filename.jpg"></div>
+                    <div class="form-group"><label>Phone</label><input type="text" id="leaderPhone"></div>
+                    <button class="btn" onclick="addLeader()">Add Leader</button>
+                </div>
+                <h3>📋 Existing Leaders (${items.length})</h3>
+                <div class="items-list">${itemsHtml || '<div class="item-row">No leaders yet</div>'}</div>
+            `;
+        } catch (error) {
+            document.getElementById('contentArea').innerHTML = `<div class="section-title">👥 Leaders</div><p>Error: ${error.message}</p>`;
+        }
+    }
+
+    function editLeaderFromRow(button) {
+        const row = button.closest('.item-row');
+        const id = row.getAttribute('data-leader-id');
+        const name = decodeHtml(row.getAttribute('data-leader-name'));
+        const title = decodeHtml(row.getAttribute('data-leader-title'));
+        const bio = decodeHtml(row.getAttribute('data-leader-bio'));
+        const photo = decodeHtml(row.getAttribute('data-leader-photo'));
+        const phone = decodeHtml(row.getAttribute('data-leader-phone'));
+        
+        editingItem = { type: 'leader', id, name, title, bio, photo, phone };
+        loadLeaders();
+    }
+
+    async function updateLeader() {
+        const leaderData = {
+            name: document.getElementById('editName').value,
+            title: document.getElementById('editTitle').value,
+            bio: document.getElementById('editBio').value,
+            photo: document.getElementById('editPhoto').value,
+            phone: document.getElementById('editPhone').value
+        };
+        try {
+            await fetch(`${API_URL}/leaders/${editingItem.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(leaderData)
+            });
+            cancelEdit();
+            loadLeaders();
+            showSuccess('Leader updated!');
+        } catch (error) { alert('Error: ' + error.message); }
+    }
+
+    async function addLeader() {
+        const leaderData = {
+            name: document.getElementById('leaderName').value,
+            title: document.getElementById('leaderTitle').value,
+            bio: document.getElementById('leaderBio').value,
+            photo: document.getElementById('leaderPhoto').value,
+            phone: document.getElementById('leaderPhone').value
+        };
+        if (!leaderData.name || !leaderData.title || !leaderData.bio) {
+            alert('Please fill name, title, and bio');
+            return;
+        }
+        try {
+            await fetch(`${API_URL}/leaders`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(leaderData)
+            });
+            loadLeaders();
+            showSuccess('Leader added!');
+        } catch (error) { alert('Error: ' + error.message); }
+    }
+
+    async function deleteLeader(id) {
+        if (!confirm('Delete this leader?')) return;
+        await fetch(`${API_URL}/leaders/${id}`, { method: 'DELETE' });
+        loadLeaders();
+        showSuccess('Leader deleted!');
+    }
+
+    // ============================================
+    // YOUTUBE
+    // ============================================
+    async function loadYouTube() {
+        try {
+            const response = await fetch(`${API_URL}/youtube`);
+            let youtubeData = await response.json();
+            if (!youtubeData) {
+                youtubeData = { videoId: '', title: 'Featured Message' };
+            }
+            
+            document.getElementById('contentArea').innerHTML = `
+                <div class="section-title">📺 Featured YouTube Video</div>
+                <div class="form-card">
+                    <h3>🎥 Current Featured Video</h3>
+                    ${youtubeData.videoId ? `
+                        <div style="margin: 20px 0; position: relative; padding-bottom: 56.25%; height: 0;">
+                            <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+                                src="https://www.youtube.com/embed/${youtubeData.videoId}" 
+                                frameborder="0" allowfullscreen>
+                            </iframe>
+                        </div>
+                    ` : '<p>No featured video set. Add one below!</p>'}
+                </div>
+                <div class="form-card">
+                    <h3>📝 Update Featured Video</h3>
+                    <div class="form-group"><label>YouTube Video ID</label>
+                        <input type="text" id="youtubeVideoId" value="${escapeHtml(youtubeData.videoId || '')}" placeholder="dQw4w9WgXcQ">
+                        <small>Get from URL: youtube.com/watch?v=VIDEO_ID</small>
+                    </div>
+                    <div class="form-group"><label>Video Title</label>
+                        <input type="text" id="youtubeTitle" value="${escapeHtml(youtubeData.title || 'Featured Message')}" placeholder="Sunday Worship Service">
+                    </div>
+                    <button class="btn" onclick="updateYouTube()">💾 Save Featured Video</button>
+                </div>
+            `;
+        } catch (error) {
+            document.getElementById('contentArea').innerHTML = `<div class="section-title">📺 Featured YouTube Video</div><p>Error: ${error.message}</p>`;
+        }
+    }
+
+    async function updateYouTube() {
+        const videoId = document.getElementById('youtubeVideoId').value.trim();
+        const title = document.getElementById('youtubeTitle').value.trim();
+        
+        if (!videoId) {
+            alert('Please enter a YouTube Video ID');
+            return;
+        }
+        
+        try {
+            await fetch(`${API_URL}/youtube`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ videoId, title })
+            });
+            loadYouTube();
+            showSuccess('Featured video updated!');
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
+    }
+
+    // ============================================
+    // ADVERT
+    // ============================================
+    async function loadAdvert() {
+        try {
+            const response = await fetch(`${API_URL}/advert`);
+            const advert = await response.json();
+            
+            document.getElementById('contentArea').innerHTML = `
+                <div class="section-title">📢 Advert Management</div>
+                <div class="form-card">
+                    <h3>📝 Update Advertisement</h3>
+                    <div class="form-group"><label>Business Name</label><input type="text" id="adBusinessName" value="${escapeHtml(advert.businessName)}"></div>
+                    <div class="form-group"><label>Flyer Path</label><input type="text" id="adFlyer" value="${advert.flyer || ''}" placeholder="flyer/image.jpg"></div>
+                    <div class="form-group"><label>Description</label><textarea id="adDescription">${escapeHtml(advert.description)}</textarea></div>
+                    <div class="form-group"><label>Products (comma separated)</label><input type="text" id="adProducts" value="${advert.products ? advert.products.join(', ') : ''}"></div>
+                    <div class="form-group"><label>Phone</label><input type="text" id="adPhone" value="${advert.phone || ''}"></div>
+                    <div class="form-group"><label>WhatsApp</label><input type="text" id="adWhatsapp" value="${advert.whatsapp || ''}"></div>
+                    <div class="form-group"><label>Location</label><input type="text" id="adLocation" value="${escapeHtml(advert.location || '')}"></div>
+                    <div class="form-group"><label>Website</label><input type="text" id="adWebsite" value="${advert.website || ''}"></div>
+                    <button class="btn" onclick="updateAdvert()">Update Advert</button>
+                </div>
+            `;
+        } catch (error) {
+            document.getElementById('contentArea').innerHTML = `<div class="section-title">📢 Advert Management</div><p>Error: ${error.message}</p>`;
+        }
+    }
+
+    async function updateAdvert() {
+        const productsInput = document.getElementById('adProducts').value;
+        const productsArray = productsInput ? productsInput.split(',').map(p => p.trim()) : [];
+        
+        const advertData = {
+            businessName: document.getElementById('adBusinessName').value,
+            flyer: document.getElementById('adFlyer').value,
+            description: document.getElementById('adDescription').value,
+            products: productsArray,
+            phone: document.getElementById('adPhone').value,
+            whatsapp: document.getElementById('adWhatsapp').value,
+            location: document.getElementById('adLocation').value,
+            website: document.getElementById('adWebsite').value
+        };
+        
+        if (!advertData.businessName || !advertData.description) {
+            alert('Business name and description are required'); return;
+        }
+        
+        try {
+            await fetch(`${API_URL}/advert`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(advertData)
+            });
+            loadAdvert();
+            showSuccess('Advert updated!');
+        } catch (error) { alert('Error: ' + error.message); }
+    }
+    // ============================================
+// CONTACTS MANAGEMENT
+// ============================================
+async function loadContacts() {
+    try {
+        const response = await fetch(`${API_URL}/contacts`);
+        const items = await response.json();
+        
+        let itemsHtml = '';
+        for (let i = 0; i < items.length; i++) {
+            const contact = items[i];
+            const date = new Date(contact.createdAt).toLocaleString();
+            itemsHtml += `
+                <div class="item-row">
+                    <div class="item-info">
+                        <div class="item-title">${escapeHtml(contact.name)}</div>
+                        <div class="item-meta">📞 ${escapeHtml(contact.phone)} | ✉️ ${escapeHtml(contact.email)}</div>
+                        <div class="item-meta">📍 ${escapeHtml(contact.location || 'Not provided')}</div>
+                        <div class="item-meta">📅 Submitted: ${date}</div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="delete-btn" onclick="deleteContact('${contact._id}')">🗑️ Delete</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        document.getElementById('contentArea').innerHTML = `
+            <div class="section-title">📞 Contact Submissions</div>
+            <div class="form-card">
+                <h3>📋 All Contact Messages (${items.length})</h3>
+                <p>People who have filled out the contact form on your website.</p>
+            </div>
+            <div class="items-list">
+                ${itemsHtml || '<div class="item-row">No contact submissions yet</div>'}
+            </div>
+        `;
+    } catch (error) {
+        document.getElementById('contentArea').innerHTML = `<div class="section-title">📞 Contacts</div><p>Error: ${error.message}</p>`;
+    }
+}
+
+async function deleteContact(id) {
+    if (!confirm('Delete this contact submission?')) return;
+    try {
+        await fetch(`${API_URL}/contacts/${id}`, { method: 'DELETE' });
+        loadContacts();
+        showSuccess('Contact deleted!');
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+}
+</script>
+
+</body>
+</html>
