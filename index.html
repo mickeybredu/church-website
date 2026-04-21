@@ -2,36 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Force browser to always get fresh version (no caching) -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <!-- Ensures proper scaling on mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gethsemane Methodist Church</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Navigation Menu -->
+<!-- ============================================ -->
+<!-- SITE NAVIGATION BAR                          -->
+<!-- ============================================ -->
 <nav class="navbar">
     <div class="nav-container">
-        <!-- Date & Time - Top Left -->
+        <!-- Date & Time display (top left) -->
         <div class="datetime-nav">
             <div class="nav-date" id="navDate"></div>
             <div class="nav-time" id="navTime"></div>
-        </div>        
+        </div>
+        
+        <!-- Church Logo and Name -->
         <div class="logo">
             <img src="images/logo.jpg" alt="Church Logo" class="logo-image">
             <span class="logo-text">Gethsemane Methodist Church (Baatsona)</span>
         </div>
+
+        <!-- Main Navigation Links (Desktop) -->
         <div class="nav-links" id="navLinks">
             <a href="index.html">Home</a>
+
+            <!-- Organizations Dropdown (Dynamically populated by JavaScript) -->
             <div class="dropdown">
                 <a href="#" class="dropdown-trigger">Organizations ▼</a>
                 <div class="dropdown-menu" id="orgsDropdownMenu">
                     <div class="loading-dropdown">Loading...</div>
                 </div>
             </div>
+
             <a href="#leaders">Leaders</a>
+
+            <!-- Features Dropdown -->
             <div class="dropdown">
                 <a href="#" class="dropdown-trigger">Features ▼</a>
                 <div class="dropdown-menu">
@@ -44,349 +57,391 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Mobile Menu Button (Hamburger) - Hidden on desktop, shown on mobile -->
         <button class="mobile-menu-btn" id="menuBtn">☰</button>
     </div>
 </nav>
 
-    <!-- Hero Slider Section -->
-    <section id="home" class="hero-slider">
-        <div class="slider-container">
-            <div class="slider-wrapper" id="sliderWrapper">
-                <!-- Slide 1 -->
-                <div class="slide active" id="slide1">
-                    <div class="slide-bg"></div>
-                    <div class="hero-content">
-                        <h1 class="church-name">Gethsemane Methodist Church (Baatsona)</h1>
-                        <p class="tagline">"A House of Prayer"</p>
-                        <div class="hero-buttons">
-                            <button class="hero-btn primary" onclick="scrollToServices()">🙏 Join Us </button>
-                            <button class="hero-btn secondary" onclick="scrollToLiveStream()">📺 Watch Live</button>
-                        </div>
+<!-- ============================================ -->
+<!-- HERO SLIDER SECTION                          -->
+<!-- ============================================ -->
+<section id="home" class="hero-slider">
+    <div class="slider-container">
+        <div class="slider-wrapper" id="sliderWrapper">
+            <!-- Slide 1 - Main Welcome Message -->
+            <div class="slide active" id="slide1">
+                <div class="slide-bg"></div>
+                <div class="hero-content">
+                    <h1 class="church-name">Gethsemane Methodist Church (Baatsona)</h1>
+                    <p class="tagline">"A House of Prayer for All Nations"</p>
+                    <div class="hero-buttons">
+                        <button class="hero-btn primary" onclick="scrollToServices()">🙏 Join Us Sunday</button>
+                        <button class="hero-btn secondary" onclick="scrollToLiveStream()">📺 Watch Live</button>
                     </div>
                 </div>
-                
-                <!-- Slide 2 -->
-                <div class="slide" id="slide2">
-                    <div class="slide-bg"></div>
-                    <div class="hero-content">
-                        <h1 class="church-name">Worship With Us</h1>
-                        <p class="tagline">Experience God's Presence Every Sunday at 8 AM</p>
-                        <div class="hero-buttons">
-                            <button class="hero-btn primary" onclick="scrollToServices()">🙏 Join Us </button>
-                            <button class="hero-btn secondary" onclick="scrollToLiveStream()">📺 Watch Live</button>
-                        </div>
+            </div>
+            
+            <!-- Slide 2 - Worship Invitation -->
+            <div class="slide" id="slide2">
+                <div class="slide-bg"></div>
+                <div class="hero-content">
+                    <h1 class="church-name">Worship With Us</h1>
+                    <p class="tagline">Experience God's Presence Every Sunday at 8 AM</p>
+                    <div class="hero-buttons">
+                        <button class="hero-btn primary" onclick="scrollToServices()">🙏 Join Us Sunday</button>
+                        <button class="hero-btn secondary" onclick="scrollToLiveStream()">📺 Watch Live</button>
                     </div>
                 </div>
-                
-                <!-- Slide 3 -->
-                <div class="slide" id="slide3">
-                    <div class="slide-bg"></div>
-                    <div class="hero-content">
-                        <h1 class="church-name">Community & Fellowship</h1>
-                        <p class="tagline">Join Our Family - Everyone is Welcome Here</p>
-                        <div class="hero-buttons">
-                            <button class="hero-btn primary" onclick="scrollToServices()">🙏 Join Us</button>
+            </div>
+            
+            <!-- Slide 3 - Community Focus -->
+            <div class="slide" id="slide3">
+                <div class="slide-bg"></div>
+                <div class="hero-content">
+                    <h1 class="church-name">Community & Fellowship</h1>
+                    <p class="tagline">Join Our Family - Everyone is Welcome Here</p>
+                    <div class="hero-buttons">
+                        <button class="hero-btn primary" onclick="scrollToServices()">🙏 Join Us Sunday</button>
                             <button class="hero-btn secondary" onclick="scrollToLiveStream()">📺 Watch Live</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slider Navigation Arrows -->
+        <button class="slider-arrow prev" id="prevBtn">❮</button>
+        <button class="slider-arrow next" id="nextBtn">❯</button>
+        
+        <!-- Slider Dots Indicators -->
+        <div class="slider-dots" id="sliderDots">
+            <span class="dot active" data-slide="0"></span>
+            <span class="dot" data-slide="1"></span>
+            <span class="dot" data-slide="2"></span>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- BIBLE VERSE OF THE DAY                       -->
+<!-- ============================================ -->
+<div class="verse-of-day">
+    <div class="container">
+        <div class="verse-card">
+            <div class="verse-icon">📖</div>
+            <div class="verse-content">
+                <div class="verse-label">✝️ Verse of the Day</div>
+                <div class="verse-text" id="verseText">Loading...</div>
+                <div class="verse-reference" id="verseReference"></div>
+            </div>
+            <button class="verse-refresh" onclick="refreshVerse()">⟳ New Verse</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- LIVE STREAM / FEATURED VIDEO                 -->
+<!-- ============================================ -->
+<section id="livestream" class="section livestream-section">
+    <div class="container">
+        <h2 class="section-title">Featured Video</h2>
+        <div class="livestream-container">
+            <div class="video-wrapper">
+                <iframe id="youtubePlayer" src="https://www.youtube.com/embed/IigZiQwQKOA" title="Church Live Stream" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="stream-info">
+                <div class="live-badge"><span class="live-dot"></span>LIVE NOW</div>
+                <h3>Sunday Worship Service</h3>
+                <p>Join us live every Sunday at 8:00 AM</p>
+                <div class="service-times">
+                    <p>📅 Sunday: 9:00 AM</p>
+                    <p>📅 Wednesday Bible Study: 7:00 PM</p>
+                    <p>📅 Friday Prayer Meeting: 7:00 PM</p>
+                </div>
+                <div class="stream-buttons">
+                    <button class="stream-btn" onclick="openYouTubeChannel()">📺 Visit Our Channel</button>
+                    <button class="stream-btn secondary" onclick="shareLiveStream()">📤 Share Live Stream</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- CHURCH ORGANIZATIONS                         -->
+<!-- ============================================ -->
+<section id="organizations" class="section alt-bg">
+    <div class="container">
+        <h2 class="section-title">Church Organizations</h2>
+        <div class="orgs-grid" id="orgsGrid"></div>
+    </div>
+</section>
+
+<!-- Modal Popup for Organization Details -->
+<div id="orgModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- FEATURES SECTION (Announcements, Events, etc.) -->
+<!-- ============================================ -->
+<section id="features" class="section">
+    <div class="container">
+        <h2 class="section-title">News & Resources</h2>
+        <div class="features-layout">
+            
+            <!-- LEFT COLUMN -->
+            <div class="features-left">
+                <!-- Announcements Card -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <span class="feature-icon">📢</span>
+                        <h3>Announcements</h3>
+                    </div>
+                    <div class="announcements-list" id="announcementsList"></div>
+                </div>
+                
+                <!-- Events Card -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <span class="feature-icon">📅</span>
+                        <h3>Upcoming Events</h3>
+                    </div>
+                    <div class="events-list" id="eventsList"></div>
+                </div>
+                
+                <!-- Daily Devotional Card -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <span class="feature-icon">📖</span>
+                        <h3>Daily Devotional</h3>
+                    </div>
+                    <div class="devotional-container">
+                        <div class="devotional-image" onclick="openDevotionalModal()">
+                            <img id="devotionalImg" src="" alt="Daily Devotional" style="width: 100%; border-radius: 10px; cursor: pointer;">
+                        </div>
+                        <div class="devotional-info">
+                            <p id="devotionalTitle" style="font-weight: bold; margin-top: 10px; text-align: center;"></p>
+                            <p id="devotionalDate" style="font-size: 12px; color: #666; text-align: center;"></p>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Navigation Arrows -->
-            <button class="slider-arrow prev" id="prevBtn">❮</button>
-            <button class="slider-arrow next" id="nextBtn">❯</button>
-            
-            <!-- Dots Navigation -->
-            <div class="slider-dots" id="sliderDots">
-                <span class="dot active" data-slide="0"></span>
-                <span class="dot" data-slide="1"></span>
-                <span class="dot" data-slide="2"></span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Bible Verse of the Day -->
-    <div class="verse-of-day">
-        <div class="container">
-            <div class="verse-card">
-                <div class="verse-icon">📖</div>
-                <div class="verse-content">
-                    <div class="verse-label">✝️ Verse of the Day</div>
-                    <div class="verse-text" id="verseText">Loading...</div>
-                    <div class="verse-reference" id="verseReference"></div>
-                </div>
-                <button class="verse-refresh" onclick="refreshVerse()">⟳ New Verse</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Live Stream Section -->
-    <section id="livestream" class="section livestream-section">
-        <div class="container">
-            <h2 class="section-title">Featured Video</h2>
-            <div class="livestream-container">
-                <div class="video-wrapper">
-                    <iframe id="youtubePlayer" src="https://www.youtube.com/embed/IigZiQwQKOA" title="Church Live Stream" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-                <div class="stream-info">
-                    <div class="live-badge"><span class="live-dot"></span>LIVE NOW</div>
-                    <h3>Sunday Worship Service</h3>
-                    <p>Join us live every Sunday at 8:00 AM</p>
-                    <div class="service-times">
-                        <p>📅 Sunday: 9:00 AM</p>
-                        <p>📅 Wednesday Bible Study: 7:00 PM</p>
-                        <p>📅 Friday Prayer Meeting: 7:00 PM</p>
+            <!-- RIGHT COLUMN -->
+            <div class="features-right">
+                <!-- Photo Gallery Card -->
+                <div id="gallery" class="feature-card">
+                    <div class="feature-header">
+                        <span class="feature-icon">🖼️</span>
+                        <h3>Photo Gallery</h3>
                     </div>
-                    <div class="stream-buttons">
-                        <button class="stream-btn" onclick="openYouTubeChannel()">📺 Visit Our Channel</button>
-                        <button class="stream-btn secondary" onclick="shareLiveStream()">📤 Share Live Stream</button>
+                    <div id="albumView">
+                        <div id="albumsGrid"></div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Organizations Section -->
-    <section id="organizations" class="section alt-bg">
-        <div class="container">
-            <h2 class="section-title">Church Organizations</h2>
-            <div class="orgs-grid" id="orgsGrid"></div>
-        </div>
-    </section>
-
-    <!-- Modal Popup -->
-    <div id="orgModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
-            <div id="modalContent"></div>
-        </div>
-    </div>
-
-    <!-- Features Section -->
-    <section id="features" class="section">
-        <div class="container">
-            <h2 class="section-title">News & Resources</h2>
-            <div class="features-layout">
-                <!-- LEFT COLUMN -->
-                <div class="features-left">
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <span class="feature-icon">📢</span>
-                            <h3>Announcements</h3>
-                        </div>
-                        <div class="announcements-list" id="announcementsList"></div>
+                    <div id="photosView" style="display: none;">
+                        <button class="back-to-albums" onclick="showAlbumView()">← Back to Albums</button>
+                        <h4 id="currentAlbumTitle" style="margin: 15px 0;"></h4>
+                        <div class="gallery-grid" id="galleryGrid"></div>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <span class="feature-icon">📅</span>
-                            <h3>Upcoming Events</h3>
-                        </div>
-                        <div class="events-list" id="eventsList"></div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <span class="feature-icon">📖</span>
-                            <h3>Daily Devotional</h3>
-                        </div>
-                        <div class="devotional-container">
-                            <div class="devotional-image" onclick="openDevotionalModal()">
-                                <img id="devotionalImg" src="" alt="Daily Devotional" style="width: 100%; border-radius: 10px; cursor: pointer;">
-                            </div>
-                            <div class="devotional-info">
-                                <p id="devotionalTitle" style="font-weight: bold; margin-top: 10px; text-align: center;"></p>
-                                <p id="devotionalDate" style="font-size: 12px; color: #666; text-align: center;"></p>
-                            </div>
-                        </div>
+                    <div id="photoModal" class="photo-modal">
+                        <span class="close-photo" onclick="closePhotoModal()">&times;</span>
+                        <img class="photo-modal-content" id="modalImage">
+                        <div id="photoCaption" class="photo-caption"></div>
                     </div>
                 </div>
                 
-                <!-- RIGHT COLUMN -->
-                <div class="features-right">
-                    <div id="gallery" class="feature-card">
-                        <div class="feature-header">
-                            <span class="feature-icon">🖼️</span>
-                            <h3>Photo Gallery</h3>
-                        </div>
-                        <div id="albumView">
-                            <div id="albumsGrid"></div>
-                        </div>
-                        <div id="photosView" style="display: none;">
-                            <button class="back-to-albums" onclick="showAlbumView()">← Back to Albums</button>
-                            <h4 id="currentAlbumTitle" style="margin: 15px 0;"></h4>
-                            <div class="gallery-grid" id="galleryGrid"></div>
-                        </div>
-                        <div id="photoModal" class="photo-modal">
-                            <span class="close-photo" onclick="closePhotoModal()">&times;</span>
-                            <img class="photo-modal-content" id="modalImage">
-                            <div id="photoCaption" class="photo-caption"></div>
-                        </div>
+                <!-- Blogs Card -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <span class="feature-icon">📝</span>
+                        <h3>Blogs & Articles</h3>
                     </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <span class="feature-icon">📝</span>
-                            <h3>Blogs & Articles</h3>
-                        </div>
-                        <div class="blogs-list" id="blogsList"></div>
-                        <div style="text-align: center; margin-top: 30px;">
-                            <a href="all-blogs.html" class="view-all-btn">📚 View All Blogs →</a>
-                        </div>
+                    <div class="blogs-list" id="blogsList"></div>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <a href="all-blogs.html" class="view-all-btn">📚 View All Blogs →</a>
                     </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <span class="feature-icon">📅</span>
-                            <h3>Weekly Outlook</h3>
-                        </div>
-                        <div class="weekly-outlook-container" id="weeklyOutlookContainer">
-                            <div class="weekly-outlook-loading">Loading...</div>
-                        </div>
+                </div>
+                
+                <!-- Weekly Outlook Card -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <span class="feature-icon">📅</span>
+                        <h3>Weekly Outlook</h3>
+                    </div>
+                    <div class="weekly-outlook-container" id="weeklyOutlookContainer">
+                        <div class="weekly-outlook-loading">Loading...</div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Church Leaders Section -->
-    <section id="leaders" class="section">
-        <div class="container">
-            <h2 class="section-title">Our Church Leaders</h2>
-            <div class="leaders-grid" id="leadersGrid"></div>
-        </div>
-    </section>
-
-    <div id="leaderModal" class="leader-modal">
-        <div class="leader-modal-content">
-            <span class="close-leader-modal" onclick="closeLeaderModal()">&times;</span>
-            <div id="leaderModalContent"></div>
-        </div>
     </div>
+</section>
 
-    <!-- Advertisement Banner -->
-    <section id="advertise" class="advertise-section">
-        <div class="container">
-            <div class="advert-card">
-                <div class="advert-flyer">
-                    <img id="advertFlyer" src="images/advert-flyer.jpg" alt="Advertisement">
-                </div>
-                <div class="advert-info">
-                    <h3 class="advert-business-name" id="advertBusinessName">Grace Bakery & Cafe</h3>
-                    <p class="advert-description" id="advertDescription">Fresh bread, cakes, and pastries made with love. 10% discount for church members!</p>
-                    <button class="advert-learn-more" id="advertLearnMoreBtn">Learn More →</button>
-                </div>
+<!-- ============================================ -->
+<!-- CHURCH LEADERS SECTION                       -->
+<!-- ============================================ -->
+<section id="leaders" class="section">
+    <div class="container">
+        <h2 class="section-title">Our Church Leaders</h2>
+        <div class="leaders-grid" id="leadersGrid"></div>
+    </div>
+</section>
+
+<!-- Leader Profile Modal -->
+<div id="leaderModal" class="leader-modal">
+    <div class="leader-modal-content">
+        <span class="close-leader-modal" onclick="closeLeaderModal()">&times;</span>
+        <div id="leaderModalContent"></div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ADVERTISEMENT BANNER                         -->
+<!-- ============================================ -->
+<section id="advertise" class="advertise-section">
+    <div class="container">
+        <div class="advert-card">
+            <div class="advert-flyer">
+                <img id="advertFlyer" src="images/advert-flyer.jpg" alt="Advertisement">
+            </div>
+            <div class="advert-info">
+                <h3 class="advert-business-name" id="advertBusinessName">Grace Bakery & Cafe</h3>
+                <p class="advert-description" id="advertDescription">Fresh bread, cakes, and pastries made with love. 10% discount for church members!</p>
+                <button class="advert-learn-more" id="advertLearnMoreBtn">Learn More →</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div id="advertModal" class="advert-modal">
-        <div class="advert-modal-content">
-            <span class="close-advert-modal" onclick="closeAdvertModal()">&times;</span>
-            <div id="advertModalContent"></div>
-        </div>
+<!-- Advertisement Modal -->
+<div id="advertModal" class="advert-modal">
+    <div class="advert-modal-content">
+        <span class="close-advert-modal" onclick="closeAdvertModal()">&times;</span>
+        <div id="advertModalContent"></div>
     </div>
+</div>
 
-    <!-- Contact Form Section -->
-    <section id="contact" class="section">
-        <div class="container">
-            <h2 class="section-title">📞 Contact Us</h2>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <h3>Get in Touch</h3>
-                    <p>Have questions? Want to know more about our church? Fill out the form and we'll get back to you.</p>
-                    <div class="contact-details">
-                        <p>📍 Baatsona, Accra</p>
-                        <p>📞 (555) 123-4567</p>
-                        <p>✉️ info@gethsemanemethodist.org</p>
+<!-- ============================================ -->
+<!-- CONTACT FORM SECTION                         -->
+<!-- ============================================ -->
+<section id="contact" class="section">
+    <div class="container">
+        <h2 class="section-title">📞 Contact Us</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Get in Touch</h3>
+                <p>Have questions? Want to know more about our church? Fill out the form and we'll get back to you.</p>
+                <div class="contact-details">
+                    <p>📍 Baatsona, Accra</p>
+                    <p>📞 (555) 123-4567</p>
+                    <p>✉️ info@gethsemanemethodist.org</p>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label>Name *</label>
+                        <input type="text" id="contactName" required>
                     </div>
-                </div>
-                <div class="contact-form">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label>Name *</label>
-                            <input type="text" id="contactName" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Location (optional)</label>
-                            <input type="text" id="contactLocation">
-                        </div>
-                        <div class="form-group">
-                            <label>Phone Number *</label>
-                            <input type="tel" id="contactPhone" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Email (optional)</label>
-                            <input type="email" id="contactEmail">
-                        </div>
-                        <button type="submit" class="btn">Send Message</button>
-                        <div id="contactFormMessage" style="margin-top: 15px;"></div>
-                    </form>
-                </div>
+                    <div class="form-group">
+                        <label>Location (optional)</label>
+                        <input type="text" id="contactLocation">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" id="contactPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email (optional)</label>
+                        <input type="email" id="contactEmail">
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                    <div id="contactFormMessage" style="margin-top: 15px;"></div>
+                </form>
             </div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-col">
-                <img src="images/logo.jpg" alt="Church Logo" class="footer-logo">
-                <h3>Gethsemane Methodist Church</h3>
-                <p>House of Prayer.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link" onclick="openSocial('facebook')">📘 Facebook</a>
-                    <a href="#" class="social-link" onclick="openSocial('youtube')">📺 YouTube</a>
-                    <a href="#" class="social-link" onclick="openSocial('tiktok')">🎵 TikTok</a>
-                    <a href="#" class="social-link" onclick="openSocial('instagram')">📷 Instagram</a>
-                </div>
-            </div>
-            <div class="footer-col">
-                <h3>Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="#home" class="footer-link">🏠 Home</a></li>
-                    <li><a href="#organizations" class="footer-link">🤝 Organizations</a></li>
-                    <li><a href="#features" class="footer-link">⭐ Features</a></li>
-                    <li><a href="#leaders" class="footer-link">🤝 Leaders</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h3>Contact Us</h3>
-                <p>📍 123 White House Lane<br>Baatsona, Tema</p>
-                <p>📞 (020) 123-2275903</p>
-                <p>✉️ gethsemane@gmail.com</p>
-            </div>
-            <div class="footer-col">
-                <h3>Service Times</h3>
-                <p>📅 Sunday Worship: 8:00 AM</p>
-                <p>📅 Wednesday Bible Study: 7:00 PM</p>
-                <p>📅 Friday Prayer: 8:00 PM</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Gethsemane Methodist Church. All Rights Reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Back to Top Button -->
-    <button id="backToTopBtn" class="back-to-top" title="Go to top">↑</button>
-
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/233208114790?text=Hello%20Gethsemane%20Methodist%20Church%2C%20I%20have%20a%20question%20about..." id="whatsappBtn" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
-        <div class="whatsapp-icon">💬</div>
-        <span class="whatsapp-text">Chat with us</span>
-    </a>
-
-    <!-- Lightbox Modal -->
-    <div id="lightbox" class="lightbox">
-        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-        <span class="lightbox-counter" id="lightboxCounter"></span>
-        <button class="lightbox-prev" onclick="prevLightboxImage(event)">❮</button>
-        <button class="lightbox-next" onclick="nextLightboxImage(event)">❯</button>
-        <div class="lightbox-content">
-            <img class="lightbox-image" id="lightboxImage">
-        </div>
-        <div class="lightbox-caption" id="lightboxCaption"></div>
     </div>
+</section>
 
-    <script src="script.js"></script>
+<!-- ============================================ -->
+<!-- FOOTER                                       -->
+<!-- ============================================ -->
+<footer class="footer">
+    <div class="footer-container">
+        <!-- Column 1: Church Info & Social Media -->
+        <div class="footer-col">
+            <img src="images/logo.jpg" alt="Church Logo" class="footer-logo">
+            <h3>Gethsemane Methodist Church</h3>
+            <p>House of Prayer.</p>
+            <div class="social-links">
+                <a href="#" class="social-link" onclick="openSocial('facebook')">📘 Facebook</a>
+                <a href="#" class="social-link" onclick="openSocial('youtube')">📺 YouTube</a>
+                <a href="#" class="social-link" onclick="openSocial('tiktok')">🎵 TikTok</a>
+                <a href="#" class="social-link" onclick="openSocial('instagram')">📷 Instagram</a>
+            </div>
+        </div>
+        
+        <!-- Column 2: Quick Links -->
+        <div class="footer-col">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+                <li><a href="#home" class="footer-link">🏠 Home</a></li>
+                <li><a href="#organizations" class="footer-link">🤝 Organizations</a></li>
+                <li><a href="#features" class="footer-link">⭐ Features</a></li>
+                <li><a href="#leaders" class="footer-link">🤝 Leaders</a></li>
+            </ul>
+        </div>
+        
+        <!-- Column 3: Contact Information -->
+        <div class="footer-col">
+            <h3>Contact Us</h3>
+            <p>📍 123 White House Lane<br>Baatsona, Tema</p>
+            <p>📞 (020) 123-2275903</p>
+            <p>✉️ gethsemane@gmail.com</p>
+        </div>
+        
+        <!-- Column 4: Service Times -->
+        <div class="footer-col">
+            <h3>Service Times</h3>
+            <p>📅 Sunday Worship: 8:00 AM</p>
+            <p>📅 Wednesday Bible Study: 7:00 PM</p>
+            <p>📅 Friday Prayer: 8:00 PM</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Gethsemane Methodist Church. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<!-- ============================================ -->
+<!-- UTILITIES & MODALS                           -->
+<!-- ============================================ -->
+
+<!-- Back to Top Button -->
+<button id="backToTopBtn" class="back-to-top" title="Go to top">↑</button>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/233208114790?text=Hello%20Gethsemane%20Methodist%20Church%2C%20I%20have%20a%20question%20about..." id="whatsappBtn" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+    <div class="whatsapp-icon">💬</div>
+    <span class="whatsapp-text">Chat with us</span>
+</a>
+
+<!-- Lightbox Modal for Gallery Images -->
+<div id="lightbox" class="lightbox">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <span class="lightbox-counter" id="lightboxCounter"></span>
+    <button class="lightbox-prev" onclick="prevLightboxImage(event)">❮</button>
+    <button class="lightbox-next" onclick="nextLightboxImage(event)">❯</button>
+    <div class="lightbox-content">
+        <img class="lightbox-image" id="lightboxImage">
+    </div>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

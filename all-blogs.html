@@ -6,9 +6,8 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gethsemane Methodist Church</title>
+    <title>All Blogs - Gethsemane Methodist Church</title>
     <link rel="stylesheet" href="style.css">
-</head>
     <style>
         .all-blogs-section {
             padding: 120px 20px 80px;
@@ -27,9 +26,9 @@
         /* Main Content - Blog List */
         .blogs-main h1 {
             font-size: 36px;
-            color: #2c3e50;
+            color: #1a1a2e;
             margin-bottom: 30px;
-            border-bottom: 3px solid #4CAF50;
+            border-bottom: 3px solid #fcb040;
             padding-bottom: 15px;
         }
         
@@ -50,7 +49,7 @@
         
         .blog-list-title {
             font-size: 24px;
-            color: #2c3e50;
+            color: #1a1a2e;
             margin-bottom: 10px;
         }
         
@@ -70,7 +69,7 @@
         }
         
         .read-more-btn {
-            background: #4CAF50;
+            background: #1a1a2e;
             color: white;
             border: none;
             padding: 8px 20px;
@@ -81,7 +80,8 @@
         }
         
         .read-more-btn:hover {
-            background: #45a049;
+            background: #fcb040;
+            color: #1a1a2e;
             transform: translateX(5px);
         }
         
@@ -97,10 +97,10 @@
         }
         
         .blogs-sidebar h3 {
-            color: #2c3e50;
+            color: #1a1a2e;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #4CAF50;
+            border-bottom: 2px solid #fcb040;
         }
         
         .search-box {
@@ -117,7 +117,7 @@
         
         .search-box input:focus {
             outline: none;
-            border-color: #4CAF50;
+            border-color: #fcb040;
         }
         
         .sidebar-blog-list {
@@ -134,12 +134,12 @@
         
         .sidebar-blog-item:hover {
             padding-left: 10px;
-            background: #f9f9f9;
+            background: #fff8e7;
         }
         
         .sidebar-blog-title {
             font-weight: bold;
-            color: #2c3e50;
+            color: #1a1a2e;
             margin-bottom: 5px;
         }
         
@@ -155,7 +155,7 @@
         }
         
         .load-more-btn {
-            background: #2c3e50;
+            background: #1a1a2e;
             color: white;
             border: none;
             padding: 12px 30px;
@@ -164,10 +164,12 @@
             font-size: 16px;
             margin-top: 20px;
             width: 100%;
+            transition: all 0.3s;
         }
         
         .load-more-btn:hover {
-            background: #1a252f;
+            background: #fcb040;
+            color: #1a1a2e;
         }
         
         @media (max-width: 768px) {
@@ -198,27 +200,27 @@
                 <img src="images/logo.jpg" alt="Church Logo" class="logo-image">
                 <span class="logo-text">Gethsemane Methodist Church</span>
             </div>
-         <div class="nav-links" id="navLinks">
-            <a href="index.html">Home</a>
-            <div class="dropdown">
-                <a href="#" class="dropdown-trigger">Organizations ▼</a>
-                <div class="dropdown-menu" id="orgsDropdownMenu">
-                    <div class="loading-dropdown">Loading...</div>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-trigger">Organizations ▼</a>
+                    <div class="dropdown-menu" id="orgsDropdownMenu">
+                        <div class="loading-dropdown">Loading...</div>
+                    </div>
+                </div>
+                <a href="index.html#leaders">Leaders</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-trigger">Features ▼</a>
+                    <div class="dropdown-menu">
+                        <a href="index.html#features" onclick="sessionStorage.setItem('scrollTo', 'announcements')">📢 Announcements</a>
+                        <a href="index.html#features" onclick="sessionStorage.setItem('scrollTo', 'events')">📅 Events</a>
+                        <a href="all-blogs.html">📝 Blogs</a>
+                        <a href="#" onclick="openDevotionalModalFromNav(); return false;">📖 Devotional</a>
+                        <a href="index.html#gallery">🖼️ Gallery</a>
+                        <a href="#" onclick="openWeeklyOutlookModal(); return false;">📅 Weekly Outlook</a>
+                    </div>
                 </div>
             </div>
-            <a href="index.html#leaders">Leaders</a>
-            <div class="dropdown">
-                <a href="#" class="dropdown-trigger">Features ▼</a>
-                <div class="dropdown-menu">
-                    <a href="index.html#features" onclick="sessionStorage.setItem('scrollTo', 'announcements')">📢 Announcements</a>
-                    <a href="index.html#features" onclick="sessionStorage.setItem('scrollTo', 'events')">📅 Events</a>
-                    <a href="all-blogs.html">📝 Blogs</a>
-                    <a href="#" onclick="openDevotionalModalFromNav(); return false;">📖 Devotional</a>
-                    <a href="index.html#gallery">🖼️ Gallery</a>
-                    <a href="#" onclick="openWeeklyOutlookModal(); return false;">📅 Weekly Outlook</a>
-                </div>
-            </div>
-        </div>
             <button class="mobile-menu-btn" id="menuBtn">☰</button>
         </div>
     </nav>
@@ -279,10 +281,9 @@
             <p>&copy; 2026 Gethsemane Methodist Church, Baatsona. All Rights Reserved.</p>
         </div>
     </footer>
+
     <!-- Back to Top Button -->
-    <button id="backToTopBtn" class="back-to-top" title="Go to top">
-        ↑
-    </button>
+    <button id="backToTopBtn" class="back-to-top" title="Go to top">↑</button>
 
     <script>
         const API_URL = 'https://church-backend-h2ch.onrender.com/api';
@@ -348,7 +349,6 @@
                 `;
             }
             
-            // Add load more button if there are more blogs
             if (filteredBlogs.length > currentDisplayCount) {
                 html += `<button class="load-more-btn" onclick="loadMoreBlogs()">Load More (${filteredBlogs.length - currentDisplayCount} remaining)</button>`;
             }
@@ -400,60 +400,34 @@
             menuBtn.addEventListener('click', function() { navLinks.classList.toggle('active'); });
         }
         
+        // ============================================
+        // BACK TO TOP BUTTON
+        // ============================================
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        
+        function toggleBackToTopButton() {
+            if (!backToTopBtn) return;
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        window.addEventListener('scroll', toggleBackToTopButton);
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', scrollToTop);
+        }
+        toggleBackToTopButton();
+        
         // Load blogs when page loads
         loadAllBlogs();
     </script>
-<script>
-    // Simple direct fetch for organizations dropdown
-    (function() {
-        const dropdownMenu = document.getElementById('orgsDropdownMenu');
-        if (!dropdownMenu) return;
-        
-        fetch('http://localhost:5001/api/organizations')
-            .then(response => response.json())
-            .then(organizations => {
-                if (organizations.length === 0) {
-                    dropdownMenu.innerHTML = '<a href="index.html#organizations">No organizations yet</a>';
-                    return;
-                }
-                let html = '';
-                for (let i = 0; i < organizations.length; i++) {
-                    const org = organizations[i];
-                    const safeName = org.name.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                    html += `<a href="organization.html?id=${org._id}">🏛️ ${safeName}</a>`;
-                }
-                dropdownMenu.innerHTML = html;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                dropdownMenu.innerHTML = '<a href="index.html#organizations">📋 View All Organizations</a>';
-            });
-    })();
-    // ============================================
-    // BACK TO TOP BUTTON
-    // ============================================
-
-    const backToTopBtn = document.getElementById('backToTopBtn');
-
-    function toggleBackToTopButton() {
-        if (!backToTopBtn) return;
-        if (window.scrollY > 300) {
-            backToTopBtn.classList.add('show');
-        } else {
-            backToTopBtn.classList.remove('show');
-        }
-    }
-
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    window.addEventListener('scroll', toggleBackToTopButton);
-    if (backToTopBtn) {
-        backToTopBtn.addEventListener('click', scrollToTop);
-    }
-    toggleBackToTopButton();
-</script>>
+    
     <script src="script.js"></script>
 </body>
 </html>

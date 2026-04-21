@@ -75,21 +75,25 @@ body {
 }
 
 .nav-links a:hover {
-    background-color: #34495e;
+    background-color: #fcb040;
     border-radius: 5px;
-    color: white;
+    color: #1a1a2e;
 }
 
 /* Mobile Menu Button - Hidden on desktop */
 .mobile-menu-btn {
     display: none;
-    background: #4CAF50;
+    background: #fcb040;
     border: none;
-    color: white;
+    color: #1a1a2e;
     font-size: 28px;
     cursor: pointer;
     padding: 8px 15px;
     border-radius: 5px;
+}
+
+.mobile-menu-btn:hover {
+    background: #e6a000;
 }
 
 /* ============================================ */
@@ -99,7 +103,7 @@ body {
 .datetime-nav {
     display: flex;
     flex-direction: column;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     padding: 5px 12px;
     border-radius: 8px;
     margin-right: 15px;
@@ -108,14 +112,14 @@ body {
 
 .nav-date {
     font-size: 11px;
-    color: #FFD700;
+    color: #fcb040;
     letter-spacing: 0.5px;
 }
 
 .nav-time {
     font-size: 14px;
     font-weight: bold;
-    color: #4CAF50;
+    color: #fcb040;
     letter-spacing: 1px;
 }
 
@@ -140,7 +144,7 @@ body {
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #2c3e50;
+    background-color: #1a1a2e;
     min-width: 200px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     border-radius: 8px;
@@ -159,7 +163,8 @@ body {
 }
 
 .dropdown-menu a:hover {
-    background-color: #d4e209;
+    background-color: #fcb040;
+    color: #1a1a2e;
     padding-left: 25px;
 }
 
@@ -185,7 +190,7 @@ body {
 }
 
 #orgsDropdownMenu::-webkit-scrollbar-thumb {
-    background: #d4e209;
+    background: #fcb040;
     border-radius: 5px;
 }
 
@@ -239,20 +244,56 @@ body {
     margin-bottom: 30px;
 }
 
-.hero-btn {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 15px 40px;
-    font-size: 18px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: transform 0.3s, background-color 0.3s;
+/* ============================================ */
+/* HERO BUTTONS (UPDATED TO GOLD)               */
+/* ============================================ */
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
 }
 
-.hero-btn:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
+.hero-btn {
+    padding: 14px 35px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.hero-btn.primary {
+    background-color: #fcb040;
+    color: #1a1a2e;
+    box-shadow: 0 4px 15px rgba(252, 176, 64, 0.3);
+}
+
+.hero-btn.primary:hover {
+    background-color: #e6a000;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(252, 176, 64, 0.4);
+}
+
+.hero-btn.secondary {
+    background-color: transparent;
+    color: white;
+    border: 2px solid #fcb040;
+    backdrop-filter: blur(5px);
+}
+
+.hero-btn.secondary:hover {
+    background-color: rgba(252, 176, 64, 0.2);
+    transform: translateY(-3px);
+    border-color: #fcb040;
+}
+
+.hero-btn:active {
+    transform: translateY(0);
 }
 
 /* ============================================ */
@@ -377,13 +418,13 @@ body {
 }
 
 .dot.active {
-    background-color: white;
+    background-color: #fcb040;
     width: 30px;
     border-radius: 10px;
 }
 
 .dot:hover {
-    background-color: white;
+    background-color: #fcb040;
     transform: scale(1.2);
 }
 
@@ -411,7 +452,7 @@ body {
 .section-title {
     text-align: center;
     font-size: 36px;
-    color: #2c3e50;
+    color: #1a1a2e;
     margin-bottom: 50px;
 }
 
@@ -420,7 +461,7 @@ body {
     display: block;
     width: 60px;
     height: 3px;
-    background-color: #4CAF50;
+    background-color: #fcb040;
     margin: 15px auto 0;
 }
 
@@ -466,7 +507,7 @@ body {
 }
 
 .feature-icon { font-size: 32px; }
-.feature-header h3 { font-size: 22px; color: #2c3e50; }
+.feature-header h3 { font-size: 22px; color: #1a1a2e; }
 
 /* ============================================ */
 /* ANNOUNCEMENTS                                */
@@ -482,25 +523,25 @@ body {
     padding: 15px;
     background-color: #f9f9f9;
     border-radius: 10px;
-    border-left: 4px solid #4CAF50;
+    border-left: 4px solid #fcb040;
     transition: all 0.3s;
 }
 
 .announcement-item:hover {
-    background-color: #e8f5e9;
+    background-color: #fff8e7;
     transform: translateX(5px);
 }
 
 .announcement-title {
     font-weight: bold;
-    color: #2c3e50;
+    color: #1a1a2e;
     margin-bottom: 5px;
     font-size: 16px;
 }
 
 .announcement-date {
     font-size: 12px;
-    color: #4CAF50;
+    color: #fcb040;
     margin-bottom: 8px;
 }
 
@@ -552,7 +593,7 @@ body {
 
 .event-poster-placeholder {
     width: 120px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #1a1a2e, #2c3e50);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -567,7 +608,7 @@ body {
 
 .event-title {
     font-size: 18px;
-    color: #2c3e50;
+    color: #1a1a2e;
     margin-bottom: 8px;
     font-weight: bold;
 }
@@ -579,7 +620,7 @@ body {
     flex-wrap: wrap;
 }
 
-.event-date { color: #4CAF50; }
+.event-date { color: #fcb040; }
 .event-time { color: #FF9800; }
 .event-date, .event-time { font-size: 13px; color: #666; }
 
@@ -635,20 +676,20 @@ body {
 }
 
 .blog-post:hover {
-    background-color: #e3f2fd;
+    background-color: #fff8e7;
     transform: translateX(5px);
 }
 
 .blog-title {
     font-weight: bold;
-    color: #2c3e50;
+    color: #1a1a2e;
     margin-bottom: 5px;
     font-size: 16px;
 }
 
 .blog-meta {
     font-size: 12px;
-    color: #2196F3;
+    color: #fcb040;
     margin-bottom: 8px;
 }
 
@@ -660,7 +701,7 @@ body {
 }
 
 .read-more {
-    color: #2196F3;
+    color: #fcb040;
     font-size: 13px;
     font-weight: bold;
     text-decoration: none;
@@ -670,7 +711,7 @@ body {
 
 .view-all-btn {
     display: inline-block;
-    background: #2c3e50;
+    background: #1a1a2e;
     color: white;
     padding: 12px 30px;
     border-radius: 30px;
@@ -679,7 +720,8 @@ body {
 }
 
 .view-all-btn:hover {
-    background: #4CAF50;
+    background: #fcb040;
+    color: #1a1a2e;
     transform: translateX(5px);
 }
 
@@ -709,8 +751,8 @@ body {
 }
 
 .org-icon { font-size: 48px; margin-bottom: 20px; }
-.org-name { font-size: 22px; color: #2c3e50; margin-bottom: 10px; }
-.org-meeting { color: #4CAF50; font-weight: bold; margin-bottom: 15px; }
+.org-name { font-size: 22px; color: #1a1a2e; margin-bottom: 10px; }
+.org-meeting { color: #fcb040; font-weight: bold; margin-bottom: 15px; }
 .org-description { color: #666; line-height: 1.6; font-size: 14px; }
 
 /* Organization Logo Images */
@@ -732,7 +774,7 @@ body {
 
 /* Learn More Button */
 .learn-more-org-btn {
-    background: linear-gradient(135deg, #03062e, #03062e);
+    background: #1a1a2e;
     color: white;
     border: none;
     padding: 8px 20px;
@@ -746,7 +788,8 @@ body {
 
 .learn-more-org-btn:hover {
     transform: translateX(5px);
-    background: linear-gradient(135deg, #044d5f, #044d5f);
+    background: #fcb040;
+    color: #1a1a2e;
 }
 
 /* Organization Description HTML Styling */
@@ -756,14 +799,14 @@ body {
 }
 
 .org-description-html strong,
-.org-description-html b { font-weight: bold; color: #2c3e50; }
+.org-description-html b { font-weight: bold; color: #1a1a2e; }
 .org-description-html em,
 .org-description-html i { font-style: italic; }
 .org-description-html ul,
 .org-description-html ol { margin: 10px 0 10px 20px; }
 .org-description-html li { margin-bottom: 5px; }
 .org-description-html h3,
-.org-description-html h4 { margin: 15px 0 10px; color: #2c3e50; }
+.org-description-html h4 { margin: 15px 0 10px; color: #1a1a2e; }
 .org-description-html p { margin-bottom: 10px; }
 
 /* ============================================ */
@@ -818,13 +861,13 @@ body {
 }
 
 .org-profile-section h4 {
-    color: #4CAF50;
+    color: #fcb040;
     margin-bottom: 10px;
 }
 
 .org-contact-btn {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #fcb040;
+    color: #1a1a2e;
     border: none;
     padding: 12px 20px;
     border-radius: 25px;
@@ -835,7 +878,7 @@ body {
     transition: background-color 0.3s;
 }
 
-.org-contact-btn:hover { background-color: #45a049; }
+.org-contact-btn:hover { background-color: #e6a000; }
 
 /* ============================================ */
 /* LEADERS                                      */
@@ -884,20 +927,20 @@ body {
 .leader-name {
     font-size: 22px;
     font-weight: bold;
-    color: #2c3e50;
+    color: #1a1a2e;
     margin-bottom: 8px;
 }
 
 .leader-title {
     font-size: 16px;
-    color: #4CAF50;
+    color: #fcb040;
     font-weight: 500;
     margin-bottom: 15px;
     letter-spacing: 0.5px;
 }
 
 .read-more-btn {
-    background-color: #2c3e50;
+    background-color: #1a1a2e;
     color: white;
     border: none;
     padding: 10px 25px;
@@ -908,7 +951,8 @@ body {
 }
 
 .read-more-btn:hover {
-    background-color: #4CAF50;
+    background-color: #fcb040;
+    color: #1a1a2e;
     transform: translateX(5px);
 }
 
@@ -964,13 +1008,13 @@ body {
 
 .leader-profile-info h2 {
     font-size: 28px;
-    color: #2c3e50;
+    color: #1a1a2e;
     margin-bottom: 5px;
 }
 
 .leader-profile-title {
     font-size: 18px;
-    color: #4CAF50;
+    color: #fcb040;
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 2px solid #f0f0f0;
@@ -984,7 +1028,7 @@ body {
 }
 
 .leader-profile-section h4 {
-    color: #4CAF50;
+    color: #fcb040;
     margin-bottom: 10px;
     font-size: 16px;
 }
@@ -1044,7 +1088,7 @@ body {
 
 .album-name {
     font-weight: bold;
-    color: #2c3e50;
+    color: #1a1a2e;
     margin-bottom: 5px;
 }
 
@@ -1054,7 +1098,7 @@ body {
 }
 
 .back-to-albums {
-    background-color: #2c3e50;
+    background-color: #1a1a2e;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -1065,7 +1109,7 @@ body {
     transition: background-color 0.3s;
 }
 
-.back-to-albums:hover { background-color: #1a252f; }
+.back-to-albums:hover { background-color: #fcb040; color: #1a1a2e; }
 
 /* Gallery Grid */
 .gallery-grid {
@@ -1171,7 +1215,7 @@ body {
 }
 
 .lightbox-close:hover {
-    background: red;
+    background: #fcb040;
     transform: scale(1.1);
 }
 
@@ -1195,7 +1239,8 @@ body {
 }
 
 .lightbox-prev:hover, .lightbox-next:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: #fcb040;
+    color: #1a1a2e;
     transform: translateY(-50%) scale(1.1);
 }
 
@@ -1247,7 +1292,8 @@ body {
 }
 
 .poster-modal .close-btn:hover {
-    background: red;
+    background: #fcb040;
+    color: #1a1a2e;
     transform: scale(1.1);
 }
 
@@ -1297,7 +1343,8 @@ body {
 }
 
 .devotional-modal .close-btn:hover {
-    background: red;
+    background: #fcb040;
+    color: #1a1a2e;
     transform: scale(1.1);
 }
 
@@ -1349,7 +1396,7 @@ body {
 }
 
 .stream-info {
-    background: #2c3e50;
+    background: #1a1a2e;
     backdrop-filter: blur(10px);
     border-radius: 15px;
     padding: 25px;
@@ -1421,7 +1468,7 @@ body {
 }
 
 .stream-btn.secondary { background-color: rgba(255,255,255,0.2); }
-.stream-btn.secondary:hover { background-color: rgba(255,255,255,0.3); }
+.stream-btn.secondary:hover { background-color: #fcb040; color: #1a1a2e; }
 
 /* ============================================ */
 /* BIBLE VERSE OF THE DAY                       */
@@ -1474,13 +1521,13 @@ body {
 .verse-card:hover {
     transform: translateY(-5px);
     background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(76, 175, 80, 0.3);
+    border-color: rgba(252, 176, 64, 0.3);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
 .verse-icon {
     font-size: 55px;
-    background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.05));
+    background: linear-gradient(135deg, rgba(252, 176, 64, 0.2), rgba(252, 176, 64, 0.05));
     width: 90px;
     height: 90px;
     display: flex;
@@ -1488,20 +1535,20 @@ body {
     justify-content: center;
     border-radius: 50%;
     flex-shrink: 0;
-    border: 2px solid rgba(76, 175, 80, 0.3);
+    border: 2px solid rgba(252, 176, 64, 0.3);
     transition: all 0.3s ease;
 }
 
 .verse-card:hover .verse-icon {
     transform: scale(1.05);
-    border-color: #4CAF50;
-    background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(76, 175, 80, 0.1));
+    border-color: #fcb040;
+    background: linear-gradient(135deg, rgba(252, 176, 64, 0.3), rgba(252, 176, 64, 0.1));
 }
 
 .verse-content { flex: 1; }
 
 .verse-label {
-    color: #4CAF50;
+    color: #fcb040;
     font-size: 12px;
     letter-spacing: 3px;
     margin-bottom: 12px;
@@ -1509,7 +1556,7 @@ body {
     font-weight: 600;
     display: inline-block;
     padding: 4px 12px;
-    background: rgba(76, 175, 80, 0.15);
+    background: rgba(252, 176, 64, 0.15);
     border-radius: 20px;
 }
 
@@ -1551,10 +1598,11 @@ body {
 }
 
 .verse-refresh:hover {
-    background: #4CAF50;
-    border-color: #4CAF50;
+    background: #fcb040;
+    color: #1a1a2e;
+    border-color: #fcb040;
     transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 5px 15px rgba(252, 176, 64, 0.3);
 }
 
 .verse-refresh:active { transform: scale(0.98); }
@@ -1587,7 +1635,7 @@ body {
 .advert-flyer {
     flex: 1;
     min-width: 280px;
-    background: #2c3e50;
+    background: #1a1a2e;
 }
 
 .advert-flyer img {
@@ -1608,7 +1656,7 @@ body {
 .advert-business-name {
     font-size: 28px;
     font-weight: bold;
-    color: #2c3e50;
+    color: #1a1a2e;
     margin-bottom: 15px;
 }
 
@@ -1620,7 +1668,7 @@ body {
 }
 
 .advert-learn-more {
-    background: linear-gradient(135deg, #4CAF50, #45a049);
+    background: #1a1a2e;
     color: white;
     border: none;
     padding: 12px 30px;
@@ -1634,7 +1682,8 @@ body {
 
 .advert-learn-more:hover {
     transform: translateX(5px);
-    background: linear-gradient(135deg, #45a049, #3d8b40);
+    background: #fcb040;
+    color: #1a1a2e;
 }
 
 /* Advert Modal */
@@ -1682,7 +1731,7 @@ body {
 
 .advert-popup-header { text-align: center; margin-bottom: 25px; }
 .advert-popup-icon { font-size: 64px; margin-bottom: 10px; }
-.advert-popup-name { font-size: 28px; color: #2c3e50; margin-bottom: 5px; }
+.advert-popup-name { font-size: 28px; color: #1a1a2e; margin-bottom: 5px; }
 
 .advert-popup-section {
     margin: 20px 0;
@@ -1692,13 +1741,13 @@ body {
 }
 
 .advert-popup-section h4 {
-    color: #4CAF50;
+    color: #fcb040;
     margin-bottom: 12px;
     font-size: 16px;
 }
 
 .advert-popup-section p { color: #555; line-height: 1.6; margin-bottom: 8px; }
-.advert-popup-section a { color: #4CAF50; text-decoration: none; }
+.advert-popup-section a { color: #fcb040; text-decoration: none; }
 .advert-popup-section a:hover { text-decoration: underline; }
 
 .advert-popup-buttons {
@@ -1719,8 +1768,8 @@ body {
     text-align: center;
 }
 
-.advert-call-btn { background-color: #2c3e50; color: white; }
-.advert-call-btn:hover { background-color: #1a252f; transform: scale(1.02); }
+.advert-call-btn { background-color: #1a1a2e; color: white; }
+.advert-call-btn:hover { background-color: #fcb040; color: #1a1a2e; transform: scale(1.02); }
 
 .advert-whatsapp-btn { background-color: #25D366; color: white; }
 .advert-whatsapp-btn:hover { background-color: #128C7E; transform: scale(1.02); }
@@ -1740,7 +1789,7 @@ body {
 }
 
 .contact-info {
-    background: linear-gradient(135deg, #2c3e50, #1a252f);
+    background: linear-gradient(135deg, #1a1a2e, #0d0d1a);
     color: white;
     padding: 40px;
 }
@@ -1776,15 +1825,15 @@ body {
 
 .contact-form input:focus {
     outline: none;
-    border-color: #4CAF50;
+    border-color: #fcb040;
 }
 
 .contact-form .btn {
     width: auto;
     min-width: 150px;
     margin-top: 10px;
-    background: #4CAF50;
-    color: white;
+    background: #fcb040;
+    color: #1a1a2e;
     border: none;
     padding: 10px 25px;
     border-radius: 30px;
@@ -1795,14 +1844,14 @@ body {
 }
 
 .contact-form .btn:hover {
-    background: #45a049;
+    background: #e6a000;
     transform: translateX(5px);
-    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 5px 15px rgba(252, 176, 64, 0.3);
 }
 
 .contact-form .btn:active { transform: translateX(5px) scale(0.98); }
 
-.success-message { background: #4CAF50; color: white; padding: 10px; border-radius: 5px; text-align: center; }
+.success-message { background: #fcb040; color: #1a1a2e; padding: 10px; border-radius: 5px; text-align: center; }
 .error-message { background: #e74c3c; color: white; padding: 10px; border-radius: 5px; text-align: center; }
 
 /* ============================================ */
@@ -1810,7 +1859,7 @@ body {
 /* ============================================ */
 
 .footer {
-    background-color: #1a1a2e;
+    background-color: #0d0d1a;
     color: #ffffff;
     padding: 50px 20px 20px;
     margin-top: 50px;
@@ -1826,7 +1875,7 @@ body {
 }
 
 .footer-col h3 {
-    color: #4CAF50;
+    color: #fcb040;
     margin-bottom: 20px;
     font-size: 18px;
 }
@@ -1851,7 +1900,7 @@ body {
 }
 
 .footer-links a:hover {
-    color: #4CAF50;
+    color: #fcb040;
     transform: translateX(5px);
 }
 
@@ -1874,7 +1923,8 @@ body {
 }
 
 .social-link:hover {
-    background-color: #4CAF50;
+    background-color: #fcb040;
+    color: #1a1a2e;
     transform: translateX(5px);
 }
 
@@ -1903,8 +1953,8 @@ body {
     right: 30px;
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    color: white;
+    background: #fcb040;
+    color: #1a1a2e;
     border: none;
     border-radius: 50%;
     font-size: 24px;
@@ -1921,7 +1971,7 @@ body {
 }
 
 .back-to-top:hover {
-    background: linear-gradient(135deg, #45a049, #3d8b40);
+    background: #e6a000;
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
@@ -1979,7 +2029,7 @@ body {
         top: 60px;
         left: 0;
         width: 100%;
-        background-color: #2c3e50;
+        background-color: #1a1a2e;
         flex-direction: column;
         text-align: center;
         padding: 20px 0;
@@ -2000,7 +2050,7 @@ body {
     
     .dropdown-menu {
         position: static;
-        background-color: #34495e;
+        background-color: #2c3e50;
         width: 100%;
         margin-top: 5px;
     }
@@ -2017,7 +2067,7 @@ body {
     }
     
     .dropdown-menu a:hover {
-        background-color: #4CAF50;
+        background-color: #fcb040;
         padding-left: 45px;
     }
     
@@ -2200,6 +2250,7 @@ body {
     .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
     .gallery-photo { height: 300px; }
 }
+
 /* ============================================ */
 /* BLOG DETAIL PAGE WITH SIDEBAR                */
 /* ============================================ */
@@ -2230,10 +2281,10 @@ body {
 }
 
 .sidebar-card h3 {
-    color: #2c3e50;
+    color: #1a1a2e;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 2px solid #4CAF50;
+    border-bottom: 2px solid #fcb040;
     font-size: 18px;
 }
 
@@ -2246,12 +2297,12 @@ body {
 
 .recent-blog-item:hover {
     padding-left: 10px;
-    background-color: #f9f9f9;
+    background-color: #fff8e7;
 }
 
 .recent-blog-title {
     font-weight: bold;
-    color: #2c3e50;
+    color: #1a1a2e;
     margin-bottom: 5px;
     font-size: 14px;
 }
@@ -2263,7 +2314,7 @@ body {
 
 .recent-blog-readmore {
     font-size: 12px;
-    color: #4CAF50;
+    color: #fcb040;
     margin-top: 5px;
     display: inline-block;
 }
@@ -2275,7 +2326,7 @@ body {
 
 .view-all-blogs-btn {
     display: inline-block;
-    background: #2c3e50;
+    background: #1a1a2e;
     color: white;
     padding: 10px 20px;
     border-radius: 30px;
@@ -2287,7 +2338,8 @@ body {
 }
 
 .view-all-blogs-btn:hover {
-    background: #4CAF50;
+    background: #fcb040;
+    color: #1a1a2e;
     transform: translateX(5px);
 }
 
@@ -2302,6 +2354,7 @@ body {
         position: static;
     }
 }
+
 /* ============================================ */
 /* WEEKLY OUTLOOK STYLES                        */
 /* ============================================ */
@@ -2313,14 +2366,14 @@ body {
 .weekly-outlook-title {
     font-size: 18px;
     font-weight: bold;
-    color: #2c3e50;
+    color: #1a1a2e;
     margin-bottom: 10px;
     text-align: center;
 }
 
 .weekly-outlook-date {
     font-size: 12px;
-    color: #4CAF50;
+    color: #fcb040;
     text-align: center;
     margin-bottom: 15px;
 }
@@ -2355,22 +2408,23 @@ body {
 }
 
 .weekly-outlook-view-btn {
-    background: #2196F3;
+    background: #1a1a2e;
     color: white;
 }
 
 .weekly-outlook-view-btn:hover {
-    background: #1976D2;
+    background: #fcb040;
+    color: #1a1a2e;
     transform: translateX(3px);
 }
 
 .weekly-outlook-download-btn {
-    background: #4CAF50;
-    color: white;
+    background: #fcb040;
+    color: #1a1a2e;
 }
 
 .weekly-outlook-download-btn:hover {
-    background: #45a049;
+    background: #e6a000;
     transform: translateX(3px);
 }
 
@@ -2426,65 +2480,6 @@ body {
 }
 
 .close-pdf-modal:hover {
-    background: red;
-}
-/* Hero Buttons */
-.hero-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 30px;
-    flex-wrap: wrap;
-}
-
-.hero-btn {
-    padding: 14px 35px;
-    font-size: 18px;
-    font-weight: bold;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: inherit;
-}
-
-.hero-btn.primary {
-    background-color: #4CAF50;
-    color: white;
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-}
-
-.hero-btn.primary:hover {
-    background-color: #45a049;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
-}
-
-.hero-btn.secondary {
-    background-color: transparent;
-    color: white;
-    border: 2px solid white;
-    backdrop-filter: blur(5px);
-}
-
-.hero-btn.secondary:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-3px);
-    border-color: #4CAF50;
-}
-
-.hero-btn:active {
-    transform: translateY(0);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .hero-buttons {
-        gap: 15px;
-    }
-    
-    .hero-btn {
-        padding: 10px 25px;
-        font-size: 14px;
-    }
+    background: #fcb040;
+    color: #1a1a2e;
 }
