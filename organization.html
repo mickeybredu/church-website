@@ -6,15 +6,15 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gethsemane Methodist Church</title>
+    <title>Organization Profile - Gethsemane Methodist Church</title>
     <link rel="stylesheet" href="style.css">
-</head>
     <style>
         .org-detail-section {
             padding: 120px 20px 80px;
             min-height: 100vh;
             background: #f9f9f9;
         }
+        
         .org-detail-container {
             max-width: 800px;
             margin: 0 auto;
@@ -23,78 +23,136 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             overflow: hidden;
         }
+        
         .org-header {
             text-align: center;
             padding: 40px;
-            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            background: linear-gradient(135deg, #1a1a2e, #0d0d1a);
             color: white;
         }
+        
         .org-logo-large {
             width: 120px;
             height: 120px;
             object-fit: cover;
             border-radius: 50%;
-            border: 4px solid #4CAF50;
+            border: 4px solid #fcb040;
             margin-bottom: 20px;
         }
+        
         .org-name {
             font-size: 32px;
             margin-bottom: 10px;
-            color: #f9f9f9;
+            color: white;
         }
+        
         .org-meeting {
             font-size: 16px;
             opacity: 0.9;
         }
+        
         .org-content {
             padding: 40px;
         }
+        
         .org-section {
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 1px solid #eee;
         }
+        
         .org-section h3 {
-            color: #4CAF50;
+            color: #fcb040;
             margin-bottom: 15px;
             font-size: 22px;
         }
+        
         .org-section p {
             color: #555;
             line-height: 1.6;
         }
+        
+        /* Organization Description HTML Styling */
+        .org-description-html {
+            line-height: 1.6;
+            color: #444;
+        }
+        
+        .org-description-html strong,
+        .org-description-html b { 
+            font-weight: bold; 
+            color: #1a1a2e; 
+        }
+        
+        .org-description-html em,
+        .org-description-html i { 
+            font-style: italic; 
+        }
+        
+        .org-description-html ul,
+        .org-description-html ol { 
+            margin: 10px 0 10px 20px; 
+        }
+        
+        .org-description-html li { 
+            margin-bottom: 5px; 
+        }
+        
+        .org-description-html h3,
+        .org-description-html h4 { 
+            margin: 15px 0 10px; 
+            color: #1a1a2e; 
+        }
+        
+        .org-description-html p { 
+            margin-bottom: 10px; 
+        }
+        
         .org-contact {
             background: #f9f9f9;
             padding: 20px;
             border-radius: 12px;
             margin-top: 20px;
         }
+        
+        .org-contact h3 {
+            color: #fcb040;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
         .org-contact p {
             margin: 10px 0;
         }
+        
         .org-contact a {
-            color: #4CAF50;
+            color: #fcb040;
             text-decoration: none;
         }
+        
         .org-contact a:hover {
             text-decoration: underline;
         }
+        
         .back-button {
             display: inline-block;
             margin: 20px;
             padding: 10px 25px;
-            background: #2c3e50;
+            background: #1a1a2e;
             color: white;
             text-decoration: none;
             border-radius: 30px;
             transition: all 0.3s;
         }
+        
         .back-button:hover {
-            background: #4CAF50;
+            background: #fcb040;
+            color: #1a1a2e;
             transform: translateX(-5px);
         }
+        
         .contact-btn {
-            background: #4CAF50;
+            background: #1a1a2e;
             color: white;
             border: none;
             padding: 12px 30px;
@@ -103,16 +161,31 @@
             font-size: 16px;
             margin-top: 15px;
             width: 100%;
+            transition: all 0.3s;
         }
+        
         .contact-btn:hover {
-            background: #45a049;
+            background: #fcb040;
+            color: #1a1a2e;
         }
+        
         @media (max-width: 768px) {
-            .org-detail-section { padding: 100px 15px 60px; }
-            .org-header { padding: 30px; }
-            .org-logo-large { width: 100px; height: 100px; }
-            .org-name { font-size: 24px; }
-            .org-content { padding: 25px; }
+            .org-detail-section { 
+                padding: 100px 15px 60px; 
+            }
+            .org-header { 
+                padding: 30px; 
+            }
+            .org-logo-large { 
+                width: 100px; 
+                height: 100px; 
+            }
+            .org-name { 
+                font-size: 24px; 
+            }
+            .org-content { 
+                padding: 25px; 
+            }
         }
     </style>
 </head>
@@ -124,27 +197,28 @@
                 <img src="images/logo.jpg" alt="Church Logo" class="logo-image">
                 <span class="logo-text">Gethsemane Methodist Church</span>
             </div>
-        <div class="nav-links" id="navLinks">
-            <a href="index.html">Home</a>
-            <div class="dropdown">
-                <a href="#" class="dropdown-trigger">Organizations ▼</a>
-                <div class="dropdown-menu" id="orgsDropdownMenu">
-                    <div class="loading-dropdown">Loading...</div>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-trigger">Organizations ▼</a>
+                    <div class="dropdown-menu" id="orgsDropdownMenu">
+                        <div class="loading-dropdown">Loading...</div>
+                    </div>
+                </div>
+                <a href="index.html#leaders">Leaders</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-trigger">Features ▼</a>
+                    <div class="dropdown-menu">
+                        <a href="index.html#features" onclick="sessionStorage.setItem('scrollTo', 'announcements')">📢 Announcements</a>
+                        <a href="index.html#features" onclick="sessionStorage.setItem('scrollTo', 'events')">📅 Events</a>
+                        <a href="all-blogs.html">📝 Blogs</a>
+                        <a href="#" onclick="openDevotionalModalFromNav(); return false;">📖 Devotional</a>
+                        <a href="index.html#gallery">🖼️ Gallery</a>
+                        <a href="#" onclick="openWeeklyOutlookModal(); return false;">📅 Weekly Outlook</a>
+                    </div>
                 </div>
             </div>
-            <a href="index.html#leaders">Leaders</a>
-            <div class="dropdown">
-                <a href="#" class="dropdown-trigger">Features ▼</a>
-                <div class="dropdown-menu">
-                    <a href="index.html#features" onclick="sessionStorage.setItem('scrollTo', 'announcements')">📢 Announcements</a>
-                    <a href="index.html#features" onclick="sessionStorage.setItem('scrollTo', 'events')">📅 Events</a>
-                    <a href="all-blogs.html">📝 Blogs</a>
-                    <a href="#" onclick="openDevotionalModalFromNav(); return false;">📖 Devotional</a>
-                    <a href="index.html#gallery">🖼️ Gallery</a>
-                    <a href="#" onclick="openWeeklyOutlookModal(); return false;">📅 Weekly Outlook</a>
-                </div>
-            </div>
-        </div>         <button class="mobile-menu-btn" id="menuBtn">☰</button>
+            <button class="mobile-menu-btn" id="menuBtn">☰</button>
         </div>
     </nav>
 
@@ -187,6 +261,9 @@
             <p>&copy; 2026 Gethsemane Methodist Church, Baatsona. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTopBtn" class="back-to-top" title="Go to top">↑</button>
 
     <script>
         const API_URL = 'https://church-backend-h2ch.onrender.com/api';
@@ -261,11 +338,36 @@
                     <div style="text-align: center; padding: 60px;">
                         <h2>Organization Not Found</h2>
                         <p>The organization you're looking for doesn't exist or has been removed.</p>
+                        <p style="color: #666; font-size: 14px;">Debug: Organization ID was "${orgId}"</p>
                         <a href="index.html#organizations" class="back-button">Back to Organizations</a>
                     </div>
                 `;
             }
         }
+
+        // ============================================
+        // BACK TO TOP BUTTON
+        // ============================================
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        
+        function toggleBackToTopButton() {
+            if (!backToTopBtn) return;
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        window.addEventListener('scroll', toggleBackToTopButton);
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', scrollToTop);
+        }
+        toggleBackToTopButton();
 
         // Mobile menu toggle
         const menuBtn = document.getElementById('menuBtn');
@@ -276,33 +378,35 @@
 
         loadOrganization();
     </script>
-<script>
-    // Simple direct fetch for organizations dropdown
-    (function() {
-        const dropdownMenu = document.getElementById('orgsDropdownMenu');
-        if (!dropdownMenu) return;
-        
-        fetch('http://localhost:5001/api/organizations')
-            .then(response => response.json())
-            .then(organizations => {
-                if (organizations.length === 0) {
-                    dropdownMenu.innerHTML = '<a href="index.html#organizations">No organizations yet</a>';
-                    return;
-                }
-                let html = '';
-                for (let i = 0; i < organizations.length; i++) {
-                    const org = organizations[i];
-                    const safeName = org.name.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                    html += `<a href="organization.html?id=${org._id}">🏛️ ${safeName}</a>`;
-                }
-                dropdownMenu.innerHTML = html;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                dropdownMenu.innerHTML = '<a href="index.html#organizations">📋 View All Organizations</a>';
-            });
-    })();
-</script>
+    
+    <!-- Simple direct fetch for organizations dropdown (using live backend) -->
+    <script>
+        (function() {
+            const dropdownMenu = document.getElementById('orgsDropdownMenu');
+            if (!dropdownMenu) return;
+            
+            fetch('https://church-backend-h2ch.onrender.com/api/organizations')
+                .then(response => response.json())
+                .then(organizations => {
+                    if (organizations.length === 0) {
+                        dropdownMenu.innerHTML = '<a href="index.html#organizations">No organizations yet</a>';
+                        return;
+                    }
+                    let html = '';
+                    for (let i = 0; i < organizations.length; i++) {
+                        const org = organizations[i];
+                        const safeName = org.name.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        html += `<a href="organization.html?id=${org._id}">🏛️ ${safeName}</a>`;
+                    }
+                    dropdownMenu.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    dropdownMenu.innerHTML = '<a href="index.html#organizations">📋 View All Organizations</a>';
+                });
+        })();
+    </script>
+    
     <script src="script.js"></script>
 </body>
 </html>
