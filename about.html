@@ -6,185 +6,132 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organization Profile - Gethsemane Methodist Church</title>
+    <title>About Us - Gethsemane Methodist Church</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .org-detail-section {
+        .about-section {
             padding: 120px 20px 80px;
             min-height: 100vh;
             background: #f9f9f9;
         }
         
-        .org-detail-container {
-            max-width: 800px;
+        .about-container {
+            max-width: 1000px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             overflow: hidden;
+            padding: 50px;
         }
         
-        .org-header {
-            text-align: center;
-            padding: 40px;
-            background: linear-gradient(135deg, #1a1a2e, #0d0d1a);
-            color: white;
-        }
-        
-        .org-logo-large {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid #fcb040;
-            margin-bottom: 20px;
-        }
-        
-        .org-name {
-            font-size: 32px;
-            margin-bottom: 10px;
-            color: white;
-        }
-        
-        .org-meeting {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        
-        .org-content {
-            padding: 40px;
-        }
-        
-        .org-section {
+        .about-title {
+            font-size: 42px;
+            color: #1a1a2e;
             margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
+            text-align: center;
+            border-bottom: 3px solid #fcb040;
+            display: inline-block;
+            width: auto;
+            padding-bottom: 15px;
         }
         
-        .org-section h3 {
-            color: #fcb040;
-            margin-bottom: 15px;
-            font-size: 22px;
+        .title-wrapper {
+            text-align: center;
+            margin-bottom: 40px;
         }
         
-        .org-section p {
-            color: #555;
-            line-height: 1.6;
-        }
-        
-        /* Organization Description HTML Styling */
-        .org-description-html {
-            line-height: 1.6;
+        /* Content Styles with Image Wrapping */
+        .about-content {
+            line-height: 1.8;
             color: #444;
-        }
-        
-        .org-description-html strong,
-        .org-description-html b { 
-            font-weight: bold; 
-            color: #1a1a2e; 
-        }
-        
-        .org-description-html em,
-        .org-description-html i { 
-            font-style: italic; 
-        }
-        
-        .org-description-html ul,
-        .org-description-html ol { 
-            margin: 10px 0 10px 20px; 
-        }
-        
-        .org-description-html li { 
-            margin-bottom: 5px; 
-        }
-        
-        .org-description-html h3,
-        .org-description-html h4 { 
-            margin: 15px 0 10px; 
-            color: #1a1a2e; 
-        }
-        
-        .org-description-html p { 
-            margin-bottom: 10px; 
-        }
-        
-        .org-contact {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 20px;
-        }
-        
-        .org-contact h3 {
-            color: #fcb040;
-            margin-bottom: 15px;
             font-size: 18px;
         }
         
-        .org-contact p {
-            margin: 10px 0;
+        .about-content p {
+            margin-bottom: 20px;
         }
         
-        .org-contact a {
-            color: #fcb040;
-            text-decoration: none;
-        }
-        
-        .org-contact a:hover {
-            text-decoration: underline;
-        }
-        
-        .back-button {
-            display: inline-block;
-            margin: 20px;
-            padding: 10px 25px;
-            background: #1a1a2e;
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            transition: all 0.3s;
-        }
-        
-        .back-button:hover {
-            background: #fcb040;
+        .about-content h2 {
             color: #1a1a2e;
-            transform: translateX(-5px);
+            margin: 30px 0 15px;
+            font-size: 28px;
         }
         
-        .contact-btn {
-            background: #1a1a2e;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 15px;
-            width: 100%;
-            transition: all 0.3s;
-        }
-        
-        .contact-btn:hover {
-            background: #fcb040;
+        .about-content h3 {
             color: #1a1a2e;
+            margin: 25px 0 10px;
+            font-size: 22px;
         }
         
+        .about-content ul, 
+        .about-content ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        .about-content li {
+            margin-bottom: 8px;
+        }
+        
+        /* Image Wrapping Styles */
+        .about-img {
+            max-width: 300px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .about-img.img-left {
+            float: left;
+            margin-right: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .about-img.img-right {
+            float: right;
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .about-img.img-center {
+            display: block;
+            margin: 20px auto;
+            float: none;
+        }
+        
+        /* Clearfix for floated content */
+        .about-content::after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+        
+        /* Loading State */
+        .loading-about {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+        }
+        
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .org-detail-section { 
-                padding: 100px 15px 60px; 
+            .about-container {
+                padding: 30px 20px;
             }
-            .org-header { 
-                padding: 30px; 
+            
+            .about-title {
+                font-size: 32px;
             }
-            .org-logo-large { 
-                width: 100px; 
-                height: 100px; 
+            
+            .about-content {
+                font-size: 16px;
             }
-            .org-name { 
-                font-size: 24px; 
-            }
-            .org-content { 
-                padding: 25px; 
+            
+            .about-img {
+                max-width: 100%;
+                float: none !important;
+                display: block;
+                margin: 20px auto;
             }
         }
     </style>
@@ -223,12 +170,9 @@
         </div>
     </nav>
 
-    <section class="org-detail-section">
-        <div class="org-detail-container" id="orgDetailContainer">
-            <div class="loading" style="text-align: center; padding: 60px;">Loading organization...</div>
-        </div>
-        <div style="text-align: center; margin-top: 30px;">
-            <a href="index.html#organizations" class="back-button">← Back to Organizations</a>
+    <section class="about-section">
+        <div class="about-container" id="aboutContainer">
+            <div class="loading-about">Loading about us...</div>
         </div>
     </section>
 
@@ -237,9 +181,15 @@
             <div class="footer-col">
                 <h3>Gethsemane Methodist Church</h3>
                 <p>Growing together in faith, love, and service.</p>
+                <div class="social-links">
+                    <a href="#" onclick="openSocial('facebook')">📘 Facebook</a>
+                    <a href="#" onclick="openSocial('youtube')">📺 YouTube</a>
+                    <a href="#" onclick="openSocial('tiktok')">🎵 TikTok</a>
+                </div>
             </div>
             <div class="footer-col">
                 <h3>Quick Links</h3>
+                <a href="about.html">About</a>
                 <a href="index.html">Home</a>
                 <a href="index.html#organizations">Organizations</a>
                 <a href="index.html#leaders">Leaders</a>
@@ -269,11 +219,6 @@
     <script>
         const API_URL = 'https://church-backend-h2ch.onrender.com/api';
 
-        function getOrgId() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('id');
-        }
-
         function escapeHtml(text) {
             if (!text) return '';
             const div = document.createElement('div');
@@ -281,66 +226,57 @@
             return div.innerHTML;
         }
 
-        async function loadOrganization() {
-            const orgId = getOrgId();
-            const container = document.getElementById('orgDetailContainer');
-            
-            console.log('Loading organization with ID:', orgId);
-            
-            if (!orgId) {
-                container.innerHTML = `<div style="text-align: center; padding: 60px;"><h2>No organization specified</h2><a href="index.html#organizations" class="back-button">Back to Organizations</a></div>`;
-                return;
-            }
+        async function loadAboutUs() {
+            const container = document.getElementById('aboutContainer');
             
             try {
-                const response = await fetch(`${API_URL}/organizations/${orgId}`);
+                const response = await fetch(`${API_URL}/about-us`);
+                if (!response.ok) throw new Error('Failed to fetch about us');
+                const data = await response.json();
                 
-                if (!response.ok) {
-                    throw new Error(`Organization not found (status: ${response.status})`);
+                // Build images HTML with proper positioning
+                let imagesHtml = '';
+                
+                if (data.image1) {
+                    const position = data.image1Position || 'right';
+                    imagesHtml += `<img src="${data.image1}" alt="Church Image" class="about-img img-${position}">`;
+                }
+                if (data.image2) {
+                    const position = data.image2Position || 'left';
+                    imagesHtml += `<img src="${data.image2}" alt="Church Image" class="about-img img-${position}">`;
+                }
+                if (data.image3) {
+                    const position = data.image3Position || 'right';
+                    imagesHtml += `<img src="${data.image3}" alt="Church Image" class="about-img img-${position}">`;
                 }
                 
-                const org = await response.json();
-                console.log('Organization data:', org);
+                // Combine images with content
+                let finalContent = data.content || '<p>No content available yet.</p>';
+                
+                // Insert images into content if they exist
+                if (imagesHtml) {
+                    // For simple placement, we'll add images at the beginning
+                    // The CSS float will handle text wrapping
+                    finalContent = `<div class="about-content">${imagesHtml}${finalContent}</div>`;
+                } else {
+                    finalContent = `<div class="about-content">${finalContent}</div>`;
+                }
                 
                 container.innerHTML = `
-                    <div class="org-header">
-                        ${org.logoLarge ? 
-                            `<img src="${org.logoLarge}" alt="${org.name}" class="org-logo-large">` : 
-                            `<div style="font-size: 64px; margin-bottom: 20px;">📌</div>`
-                        }
-                        <h1 class="org-name">${escapeHtml(org.name)}</h1>
-                        <p class="org-meeting">📅 ${escapeHtml(org.meeting)}</p>
+                    <div class="title-wrapper">
+                        <h1 class="about-title">${escapeHtml(data.title || 'About Us')}</h1>
                     </div>
-                    <div class="org-content">
-                        <div class="org-section">
-                            <h3>📋 About This Ministry</h3>
-                            <div class="org-description-html">${org.description}</div>
-                        </div>
-                        <div class="org-section">
-                            <h3>👤 Ministry Leader</h3>
-                            <p>${escapeHtml(org.leader)}</p>
-                        </div>
-                        <div class="org-section">
-                            <h3>📍 Location</h3>
-                            <p>${escapeHtml(org.location)}</p>
-                        </div>
-                        <div class="org-contact">
-                            <h3>📞 Contact Information</h3>
-                            <p>📧 <a href="mailto:${escapeHtml(org.email)}">${escapeHtml(org.email)}</a></p>
-                            <button class="contact-btn" onclick="window.location.href='mailto:${escapeHtml(org.email)}'">📧 Send Email</button>
-                        </div>
-                    </div>
+                    ${finalContent}
                 `;
-                document.title = `${org.name} - Gethsemane Methodist Church`;
+                
+                document.title = `${data.title || 'About Us'} - Gethsemane Methodist Church`;
                 
             } catch (error) {
-                console.error('Error loading organization:', error);
+                console.error('Error loading about us:', error);
                 container.innerHTML = `
-                    <div style="text-align: center; padding: 60px;">
-                        <h2>Organization Not Found</h2>
-                        <p>The organization you're looking for doesn't exist or has been removed.</p>
-                        <p style="color: #666; font-size: 14px;">Debug: Organization ID was "${orgId}"</p>
-                        <a href="index.html#organizations" class="back-button">Back to Organizations</a>
+                    <div style="text-align: center; padding: 40px;">
+                        <h2>Unable to load content</h2>
+                        <p>Please try again later.</p>
                     </div>
                 `;
             }
@@ -377,10 +313,15 @@
             menuBtn.addEventListener('click', function() { navLinks.classList.toggle('active'); });
         }
 
-        loadOrganization();
+        function openSocial(platform) { 
+            alert(`Opening ${platform}`); 
+        }
+
+        // Load about us when page loads
+        loadAboutUs();
     </script>
     
-    <!-- Simple direct fetch for organizations dropdown (using live backend) -->
+    <!-- Simple direct fetch for organizations dropdown -->
     <script>
         (function() {
             const dropdownMenu = document.getElementById('orgsDropdownMenu');
