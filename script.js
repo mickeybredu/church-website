@@ -34,25 +34,68 @@ function showWelcome() {
 }
 
 // ============================================
-// MOBILE MENU TOGGLE
+// MOBILE MENU TOGGLE - FIXED
 // ============================================
 
-const menuBtn = document.getElementById('menuBtn');
-const navLinks = document.getElementById('navLinks');
-
-if (menuBtn) {
-    menuBtn.addEventListener('click', function() {
-        navLinks.classList.toggle('active');
-    });
-}
-
-// Close mobile menu when a link is clicked
-document.querySelectorAll('.nav-links a, .dropdown-trigger').forEach(link => {
-    link.addEventListener('click', () => {
-        if (navLinks) {
-            navLinks.classList.remove('active');
+document.addEventListener('DOMContentLoaded', function() {
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (menuBtn && navLinks) {
+        // Toggle mobile menu
+        menuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            navLinks.classList.toggle('active');
+            console.log('Menu toggled'); // Debug
+        });
+        
+        // Close mobile menu when a link is clicked
+        const allLinks = document.querySelectorAll('.nav-links a, .dropdown-trigger');
+        allLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+    }
+    
+    // Mobile dropdown click handler
+    const dropdowns = document.querySelectorAll('.dropdown');
+    dropdowns.forEach(dropdown => {
+        const trigger = dropdown.querySelector('.dropdown-trigger');
+        if (trigger) {
+            trigger.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    dropdown.classList.toggle('active');
+                }
+            });
         }
     });
+    
+    // Update date and time in navbar
+    function updateDateTime() {
+        const navDate = document.getElementById('navDate');
+        const navTime = document.getElementById('navTime');
+        
+        if (navDate && navTime) {
+            const now = new Date();
+            navDate.textContent = now.toLocaleDateString('en-US', { 
+                weekday: 'short', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+            navTime.textContent = now.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+        }
+    }
+    
+    updateDateTime();
+    setInterval(updateDateTime, 60000); // Update every minute
 });
 
 // ============================================
