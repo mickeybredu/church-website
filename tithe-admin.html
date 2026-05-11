@@ -4827,170 +4827,102 @@ function populateNewUserClassDropdown() {
 
  // ==========REGISTER A  USER ==========
 async function registerUser() {
-
     const username = document.getElementById('newUsername').value.trim();
     const password = document.getElementById('newUserPassword').value;
     const role = document.getElementById('newUserRole').value;
-
     let bibleClass = null;
-
-    // =========================
-    // VALIDATION
-    // =========================
+    
     if (!username) {
         showAlert('Error', 'Username is required', true);
         return;
     }
-
+    
     if (!password) {
         showAlert('Error', 'Password is required', true);
         return;
     }
-
+    
     if (password.length < 4) {
         showAlert('Error', 'Password must be at least 4 characters', true);
         return;
     }
-
-    // =========================
-    // CLASS LEADER CHECK
-    // =========================
+    
     if (role === 'class_leader') {
-
         bibleClass = document.getElementById('newUserClass').value;
-
         if (!bibleClass) {
-            showAlert(
-                'Error',
-                'Please select a Bible Class for the Class Leader',
-                true
-            );
+            showAlert('Error', 'Please select a Bible Class for the Class Leader', true);
             return;
         }
-
-        try {
-
-            // Fetch latest users directly from API
-            const response = await fetch(`${API_URL}/users`, {
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                }
-            });
-
-            const data = await response.json();
-
-            const users = data.users || data || [];
-
-            // Check if class already has leader
-            const existingLeader = users.find(user =>
-                user.role === 'class_leader' &&
-                user.bibleClass &&
-                user.bibleClass.trim().toLowerCase() === bibleClass.trim().toLowerCase()
-            );
-
-            if (existingLeader) {
-
-                showAlert(
-                    'Error',
-                    `❌ "${bibleClass}" already has a Class Leader (${existingLeader.username})`,
-                    true
-                );
-
-                return;
-            }
-
-        } catch (err) {
-
-            console.error('Class leader validation error:', err);
-
-            showAlert(
-                'Error',
-                'Unable to validate existing class leaders',
-                true
-            );
-
+        
+        // Check if this class already has a leader
+        showAlert('Info', 'Checking if class already has a leader...', false);
+        const hasLeader = await checkClassAlreadyHasLeader(bibleClass);
+        
+        if (hasLeader) {
+            showAlert('Error', `❌ Class "${bibleClass}" already has a class leader! Each class can only have ONE class leader.`, true);
             return;
         }
     }
-
-    // =========================
-    // REGISTER USER
-    // =========================
+    
     try {
-
         const response = await fetch(`${API_URL}/auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authToken}`
             },
-            body: JSON.stringify({
-                username,
-                password,
-                role,
+            body: JSON.stringify({ 
+                username, 
+                password, 
+                role, 
                 bibleClass,
-                isTemporaryPassword: true
+                isTemporaryPassword: true 
             })
         });
-
+        
         const data = await response.json();
-
+        
         if (response.ok) {
-
-            showAlert(
-                'Success',
-                `User "${username}" registered successfully`,
-                false
-            );
-
-            // Clear fields
+            showAlert('Success', `User "${username}" registered successfully`, false);
             document.getElementById('newUsername').value = '';
             document.getElementById('newUserPassword').value = '';
             document.getElementById('newUserRole').value = 'class_leader';
             document.getElementById('newUserClass').value = '';
-
             toggleClassLeaderField();
-
-            // Reload users table
-            await loadUsers();
-
+            loadUsers(); // Refresh the users list
         } else {
-
-            showAlert(
-                'Error',
-                data.error || 'Registration failed',
-                true
-            );
+            showAlert('Error', data.error || 'Registration failed', true);
         }
-
     } catch (error) {
-
         console.error('Registration error:', error);
-
-        showAlert(
-            'Error',
-            'Failed to register user',
-            true
-        );
+        showAlert('Error', 'Failed to register user', true);
     }
 }
 
-function checkClassAlreadyHasLeader(className) {
-    const rows = document.querySelectorAll('#usersList tr');
-    
-    for (let row of rows) {
-        const cells = row.querySelectorAll('td');
-        if (cells.length >= 3) {
-            const roleText = cells[1].innerText.trim();
-            const classText = cells[2].innerText;
-            
-            // Direct comparison using the exact string
-            if ((roleText === 'Class Leader' || roleText === '📘 Class Leader') && classText === className) {
-                return true;
-            }
+// Check if a class already has a class leader
+async function checkClassAlreadyHasLeader(className) {
+    try {
+        // Fetch the latest users from the server
+        const response = await fetch(`${API_URL}/auth/users`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        const users = await response.json();
+        
+        // Check if any user is a class leader for this class
+        const existingLeader = users.find(user => 
+            user.role === 'class_leader' && user.bibleClass === className
+        );
+        
+        if (existingLeader) {
+            console.log(`Class "${className}" already has leader: ${existingLeader.username}`);
+            return true;
         }
+        return false;
+        
+    } catch (error) {
+        console.error('Error checking class leader:', error);
+        return false; // Allow registration if check fails
     }
-    return false;
 }
 
 // ==========DASHBOARD FUNCTION ==========
