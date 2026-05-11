@@ -10,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gethsemane Methodist Church</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
@@ -18,49 +20,48 @@
 <!-- ============================================ -->
 <nav class="navbar">
     <div class="nav-container">
-        <!-- Date & Time display (top left) -->
-        <div class="datetime-nav">
-            <div class="nav-date" id="navDate"></div>
-            <div class="nav-time" id="navTime"></div>
-        </div>
-        
-        <!-- Church Logo and Name -->
-        <div class="logo">
-            <img src="images/logo.jpg" alt="Church Logo" class="logo-image">
-            <span class="logo-text">Gethsemane Methodist Church (Baatsona)</span>
-        </div>
-
-        <!-- Main Navigation Links (Desktop) -->
-        <div class="nav-links" id="navLinks">
-            <a href="about.html">About</a>
-            <a href="index.html">Home</a>
-
-            <!-- Organizations Dropdown (Dynamically populated by JavaScript) -->
-            <div class="dropdown">
-                <a href="#" class="dropdown-trigger">Organizations ▼</a>
-                <div class="dropdown-menu" id="orgsDropdownMenu">
-                    <div class="loading-dropdown">Loading...</div>
-                </div>
+        <!-- LEFT SIDE: Date/Time + Logo -->
+        <div class="nav-left">
+            <div class="datetime-nav">
+                <div class="nav-date" id="navDate"></div>
+                <div class="nav-time" id="navTime"></div>
             </div>
-
-            <a href="#leaders">Leaders</a>
-
-            <!-- Features Dropdown -->
-            <div class="dropdown">
-                <a href="#" class="dropdown-trigger">Features ▼</a>
-                <div class="dropdown-menu">
-                    <a href="#features" onclick="sessionStorage.setItem('scrollTo', 'announcements')">📢 Announcements</a>
-                    <a href="#features" onclick="sessionStorage.setItem('scrollTo', 'events')">📅 Events</a>
-                    <a href="all-blogs.html">📝 Blogs</a>
-                    <a href="#" onclick="openDevotionalModalFromNav(); return false;">📖 Devotional</a>
-                    <a href="#gallery">🖼️ Gallery</a>
-                    <a href="#" onclick="openWeeklyOutlookModal(); return false;">📅 Weekly Outlook</a>
-                </div>
+            <div class="logo">
+                <img src="images/logo.jpg" alt="Church Logo" class="logo-image">
+                <span class="logo-text">Gethsemane Methodist Church (Baatsona) </span>
             </div>
         </div>
         
-        <!-- Mobile Menu Button (Hamburger) - Hidden on desktop, shown on mobile -->
-        <button class="mobile-menu-btn" id="menuBtn">☰</button>
+        <!-- RIGHT SIDE: Navigation Links + Mobile Button -->
+        <div class="nav-right">
+            <div class="nav-links" id="navLinks">
+                <a href="about.html">ABOUT</a>
+                <a href="index.html">HOME</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-trigger">ORGANIZATIONS ▼</a>
+                    <div class="dropdown-menu" id="orgsDropdownMenu">
+                        <div class="loading-dropdown">Loading...</div>
+                    </div>
+                </div>
+                <a href="index.html#leaders">LEADERS</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-trigger">FEATURES ▼</a>
+                    <div class="dropdown-menu">
+                        <a href="index.html#features" onclick="sessionStorage.setItem('scrollTo', 'announcements')">📢 Announcements</a>
+                        <a href="index.html#features" onclick="sessionStorage.setItem('scrollTo', 'events')">📅 Events</a>
+                        <a href="all-blogs.html">📝 Blogs</a>
+                        <a href="#" onclick="openDevotionalModalFromNav(); return false;">📖 Devotional</a>
+                        <a href="index.html#gallery">🖼️ Gallery</a>
+                        <a href="#" onclick="openWeeklyOutlookModal(); return false;">📅 Weekly Outlook</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ADD THIS BUTTON HERE -->
+            <a href="tithe-admin.html" target="_blank" class="member-portal-btn">👤 Member Portal</a>
+            
+            <button class="mobile-menu-btn" id="menuBtn">☰</button>
+        </div>
     </div>
 </nav>
 
@@ -74,10 +75,12 @@
             <div class="slide active" id="slide1">
                 <div class="slide-bg"></div>
                 <div class="hero-content">
-                    <h1 class="church-name">Gethsemane Methodist Church (Baatsona)</h1>
-                    <p class="tagline">"A House of Prayer for All Nations"</p>
+                    <h1 class="conexion-name">The Methodist Church Ghana</h1>
+                    <h1 class="curcuit-name">Tema Spintex Circuit</h1>
+                    <h1 class="church-name">Gethsemane Methodist Church, Baatsona</h1>
+                    <p class="tagline">"A House of Prayer "</p>
                     <div class="hero-buttons">
-                        <button class="hero-btn primary" onclick="scrollToServices()">🙏 Join Us Sunday</button>
+                        <button class="hero-btn primary" onclick="scrollToServices()">🙏 Join Us</button>
                         <button class="hero-btn secondary" onclick="scrollToLiveStream()">📺 Watch Live</button>
                     </div>
                 </div>
@@ -90,7 +93,7 @@
                     <h1 class="church-name">Worship With Us</h1>
                     <p class="tagline">Experience God's Presence Every Sunday at 8 AM</p>
                     <div class="hero-buttons">
-                        <button class="hero-btn primary" onclick="scrollToServices()">🙏 Join Us Sunday</button>
+                        <button class="hero-btn primary" onclick="scrollToServices()">🙏 Join Us</button>
                         <button class="hero-btn secondary" onclick="scrollToLiveStream()">📺 Watch Live</button>
                     </div>
                 </div>
@@ -103,7 +106,7 @@
                     <h1 class="church-name">Community & Fellowship</h1>
                     <p class="tagline">Join Our Family - Everyone is Welcome Here</p>
                     <div class="hero-buttons">
-                        <button class="hero-btn primary" onclick="scrollToServices()">🙏 Join Us Sunday</button>
+                        <button class="hero-btn primary" onclick="scrollToServices()">🙏 Join Us</button>
                             <button class="hero-btn secondary" onclick="scrollToLiveStream()">📺 Watch Live</button>
                     </div>
                 </div>
@@ -373,51 +376,102 @@
 <!-- ============================================ -->
 <footer class="footer">
     <div class="footer-container">
-        <!-- Column 1: Church Info & Social Media -->
+        <!-- Column 1: Church Info -->
         <div class="footer-col">
             <img src="images/logo.jpg" alt="Church Logo" class="footer-logo">
             <h3>Gethsemane Methodist Church</h3>
             <p>House of Prayer.</p>
-            <div class="social-links">
-                <a href="#" class="social-link" onclick="openSocial('facebook')">📘 Facebook</a>
-                <a href="#" class="social-link" onclick="openSocial('youtube')">📺 YouTube</a>
-                <a href="#" class="social-link" onclick="openSocial('tiktok')">🎵 TikTok</a>
-                <a href="#" class="social-link" onclick="openSocial('instagram')">📷 Instagram</a>
-            </div>
+            <p>Growing together in faith, love, and service.</p>
         </div>
         
         <!-- Column 2: Quick Links -->
         <div class="footer-col">
             <h3>Quick Links</h3>
             <ul class="footer-links">
-                <li><a href="#home" class="footer-link">🏠 Home</a></li>
-                <li><a href="#organizations" class="footer-link">🤝 Organizations</a></li>
-                <li><a href="#features" class="footer-link">⭐ Features</a></li>
-                <li><a href="#leaders" class="footer-link">🤝 Leaders</a></li>
+                <li><a href="about.html"><i class="fas fa-church"></i> About Us</a></li>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#organizations"><i class="fas fa-users"></i> Organizations</a></li>
+                <li><a href="#leaders"><i class="fas fa-person"></i> Leaders</a></li>
+                <li><a href="#features"><i class="fas fa-star"></i> Features</a></li>
+                <li><a href="all-blogs.html"><i class="fas fa-blog"></i> Blogs</a></li>
+            </ul>
+        </div>
+        <!-- Column 3: Other  Links -->
+        <div class="footer-col">
+            <h3>Other Links</h3>
+            <ul class="footer-links">
+                <li><a href="https://methodistchurch.org.gh/" class="footer-link"> Methodist Church Ghana</a></li>
+                <li><a href="https://wesleyannews.com/" class="footer-link"> WTV</a></li>
+                <li><a href="https://web.facebook.com/mcgtemadiocese/?_rdc=1&_rdr#" class="footer-link">Tema Diocese</a></li>
+                
             </ul>
         </div>
         
-        <!-- Column 3: Contact Information -->
+        <!-- Column 4: Connect With Us (Social Links - Separated) -->
         <div class="footer-col">
-            <h3>Contact Us</h3>
-            <p>📍 123 White House Lane<br>Baatsona, Tema</p>
-            <p>📞 (020) 123-2275903</p>
-            <p>✉️ gethsemane@gmail.com</p>
+            <h3>Connect With Us</h3>
+            <div class="social-links">
+                <a href="#" class="social-link facebook" onclick="openSocial('facebook')">
+                    <i class="fab fa-facebook-f"></i>
+                    
+                </a>
+                <a href="#" class="social-link youtube" onclick="openSocial('youtube')">
+                    <i class="fab fa-youtube"></i>
+                    
+                </a>
+                <a href="#" class="social-link tiktok" onclick="openSocial('tiktok')">
+                    <i class="fab fa-tiktok"></i>
+                    
+                </a>
+                <a href="#" class="social-link instagram" onclick="openSocial('instagram')">
+                    <i class="fab fa-instagram"></i>
+                    
+                </a>
+                <a href="#" class="social-link twitter" onclick="openSocial('x')">
+                    <i class="fab fa-x-twitter"></i>
+                    
+                </a>
+            </div>
         </div>
         
-        <!-- Column 4: Service Times -->
+        <!-- Column 5: Contact Information -->
+        <div class="footer-col">
+            <h3>Contact Us</h3>
+            <p><i class="fas fa-map-marker-alt"></i> Baatsona, Accra</p>
+            <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+            <p><i class="fas fa-envelope"></i> info@gethsemanemethodist.org</p>
+        </div>
+        
+        <!-- Column 6: Service Times -->
         <div class="footer-col">
             <h3>Service Times</h3>
-            <p>📅 Sunday Worship: 8:00 AM</p>
-            <p>📅 Wednesday Bible Study: 7:00 PM</p>
-            <p>📅 Friday Prayer: 8:00 PM</p>
+            <p><i class="fas fa-church"></i> Sunday Worship: 8:00 AM</p>
+            <p><i class="fas fa-bible"></i> Wednesday Bible Study: 7:00 PM</p>
+            <p><i class="fas fa-praying-hands"></i> Friday Prayer: 5:30 PM</p>
+        </div>
+        <!-- Column 7: Find Us on Map -->
+        <div class="footer-col">
+            <h3>Find Us</h3>
+            <div class="map-container" onclick="openGoogleMaps()">
+                <img src="https://maps.googleapis.com/maps/api/staticmap?center=Baatsona+Tema+Ghana&zoom=15&size=300x150&markers=color:red%7CBaatsona+Tema+Ghana&style=element:geometry%7Ccolor:0x1a1a2e&style=element:labels%7Cvisibility:off" 
+                    alt="Church Location" 
+                    class="map-image"
+                    onerror="this.src='https://via.placeholder.com/300x150/2c3e50/white?text=Map+Loading'">
+            </div>
+            <div class="map-address">
+                <p><i class="fas fa-location-dot"></i> Baatsona, Tema, Ghana</p>
+                <a href="#" onclick="openGoogleMaps(); return false;" class="map-link">
+                    <i class="fas fa-external-link-alt"></i> Open in Google Maps →
+                </a>
+            </div>
         </div>
     </div>
-    <div class="footer-bottom">
-        <p>&copy; 2026 Gethsemane Methodist Church. All Rights Reserved.</p>
-    </div>
-</footer>
 
+    <div class="footer-bottom">
+        <p>&copy; 2026 Gethsemane Methodist Church, Baatsona. All Rights Reserved.</p>
+    </div>
+
+</footer>
 <!-- ============================================ -->
 <!-- UTILITIES & MODALS                           -->
 <!-- ============================================ -->

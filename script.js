@@ -1,12 +1,23 @@
 // ============================================
 // API CONFIGURATION
 // ============================================
-const API_URL = 'https://church-backend-h2ch.onrender.com/api';
 
-// ============================================
-// HELPER FUNCTIONS
-// ============================================
+// Change this to 'local' or 'production' to switch environments
+// 'local' = use your computer's backend (http://localhost:5001/api)
+// 'production' = use the live backend on Render
+const ENVIRONMENT = 'production';  // ← CHANGE THIS when deploying use local for desktop and production for online
 
+// API URLs for different environments
+const API_URLS = {
+    local: 'http://localhost:5001/api',
+    production: 'https://church-backend-h2ch.onrender.com/api'
+};
+
+// Use the appropriate API URL based on environment
+const API_URL = API_URLS[ENVIRONMENT];
+
+// Optional: Log which environment you're using (helps debugging)
+console.log(`🔧 Using ${ENVIRONMENT} environment: ${API_URL}`);
 function escapeHtml(text) {
     if (!text) return '';
     const div = document.createElement('div');
@@ -45,6 +56,17 @@ document.querySelectorAll('.nav-links a, .dropdown-trigger').forEach(link => {
 });
 
 // ============================================
+// HELPER FUNCTION: DECODE HTML ENTITIES
+// ============================================
+
+function decodeHtmlEntities(text) {
+    if (!text) return '';
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = text;
+    return textarea.value;
+}
+
+// ============================================
 // ORGANIZATIONS
 // ============================================
 
@@ -72,15 +94,21 @@ function displayOrganizations(organizations) {
     let html = '';
     for (let i = 0; i < organizations.length; i++) {
         const org = organizations[i];
+        
+        // FIX: Replace literal &nbsp; with spaces (AND DON'T escape it again)
+        let cleanName = org.name.replace(/&nbsp;/g, ' ');
+        cleanName = cleanName.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+        
+        // IMPORTANT: Use cleanName directly, NOT wrapped in escapeHtml
         const plainTextDesc = org.description.replace(/<[^>]*>/g, '');
         const shortDesc = plainTextDesc.length > 80 ? plainTextDesc.substring(0, 80) + '...' : plainTextDesc;
         
         html += `
             <div class="org-card">
                 <div class="org-icon">${org.icon || '📌'}</div>
-                <h3 class="org-name">${escapeHtml(org.name)}</h3>
-                <p class="org-meeting">📅 ${escapeHtml(org.meeting)}</p>
-                <div class="org-description">${escapeHtml(shortDesc)}</div>
+                <h3 class="org-name">${cleanName}</h3>
+                <p class="org-meeting">📅 ${org.meeting}</p>
+                <div class="org-description">${shortDesc}</div>
                 <button class="learn-more-org-btn" onclick="openOrgProfile('${org._id}')">Learn More →</button>
             </div>
         `;
@@ -88,63 +116,39 @@ function displayOrganizations(organizations) {
     grid.innerHTML = html;
 }
 
-function openOrgProfile(orgId) {
-    if (orgId) {
-        window.location.href = `organization.html?id=${orgId}`;
-    }
-}
+// ============================================
+// ORGANIZATIONS DROPDOWN
+// ============================================
 
-function displayFallbackOrganizations() {
-    const grid = document.getElementById('orgsGrid');
-    if (!grid) return;
-    grid.innerHTML = '<div class="org-card"><p>Unable to load organizations. Please refresh.</p></div>';
-}
-
-async function showOrgProfile(orgId) {
+async function loadOrganizationsDropdown() {
+    const dropdownMenu = document.getElementById('orgsDropdownMenu');
+    if (!dropdownMenu) return;
+    
+    dropdownMenu.innerHTML = '<div class="loading-dropdown">⏳ Loading...</div>';
+    
     try {
-        const response = await fetch(`${API_URL}/organizations/${orgId}`);
-        if (!response.ok) throw new Error('Failed to fetch organization details');
-        const org = await response.json();
+        const response = await fetch(`${API_URL}/organizations`);
+        if (!response.ok) throw new Error('Failed to fetch organizations');
+        const organizations = await response.json();
         
-        const modal = document.getElementById('orgModal');
-        const modalContent = document.getElementById('modalContent');
+        if (organizations.length === 0) {
+            dropdownMenu.innerHTML = '<a href="index.html#organizations">No organizations yet</a>';
+            return;
+        }
         
-        modalContent.innerHTML = `
-            <div style="text-align: center;">
-                ${org.logoLarge ? 
-                    `<img src="${org.logoLarge}" alt="${org.name} Logo" class="org-logo-large">` : 
-                    `<div style="font-size: 64px; margin-bottom: 15px;">📌</div>`
-                }
-                <h2 style="color: #2c3e50; margin-bottom: 10px;">${escapeHtml(org.name)}</h2>
-            </div>
-            <div class="org-profile-section">
-                <h4>📅 Meeting Time</h4>
-                <p>${escapeHtml(org.meeting)}</p>
-            </div>
-            <div class="org-profile-section">
-                <h4>📋 About This Ministry</h4>
-                <p>${escapeHtml(org.description)}</p>
-            </div>
-            <div class="org-profile-section">
-                <h4>👤 Ministry Leader</h4>
-                <p>${escapeHtml(org.leader)}</p>
-            </div>
-            <div class="org-profile-section">
-                <h4>📍 Location</h4>
-                <p>${escapeHtml(org.location)}</p>
-            </div>
-            <div class="org-profile-section">
-                <h4>📧 Contact</h4>
-                <p>${escapeHtml(org.email)}</p>
-            </div>
-            <button class="org-contact-btn" onclick="contactOrganization('${escapeHtml(org.name)}')">
-                📞 Contact This Ministry
-            </button>
-        `;
-        modal.style.display = 'block';
+        let html = '';
+        for (let i = 0; i < organizations.length; i++) {
+            const org = organizations[i];
+            // Decode HTML entities
+            const decodedName = decodeHtmlEntities(org.name);
+            const safeName = decodedName.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            html += `<a href="organization.html?id=${org._id}">🏛️ ${safeName}</a>`;
+        }
+        dropdownMenu.innerHTML = html;
+        
     } catch (error) {
-        console.error('Error fetching organization details:', error);
-        alert('Unable to load organization details');
+        console.error('Error loading organizations dropdown:', error);
+        dropdownMenu.innerHTML = '<a href="index.html#organizations">📋 View All Organizations</a>';
     }
 }
 
@@ -186,7 +190,7 @@ function openSocial(platform) {
         case 'instagram': url = 'https://instagram.com/yourchurch'; message = 'Instagram page'; break;
         default: url = '#'; message = 'social media';
     }
-    alert(`📱 Opening our ${message}\n\nIn a real website, this would open:\n${url}`);
+    alert(`📱 Opening our ${message}\n\n Change to social links:\n${url}`);
 }
 
 // ============================================
@@ -523,11 +527,11 @@ document.addEventListener('keydown', function(e) {
 // ============================================
 
 function openYouTubeChannel() {
-    alert('Opening YouTube channel\n\nReplace this URL with your actual YouTube channel link.');
+    window.open('https://www.youtube.com/@gethsemanemeth/streams', '_blank');
 }
 
 function shareLiveStream() {
-    const streamUrl = window.location.href;
+    const streamUrl = 'https://www.youtube.com/@gethsemanemeth/streams';
     if (navigator.share) {
         navigator.share({ title: 'Church Live Stream', text: 'Join us for worship live!', url: streamUrl });
     } else {
@@ -1169,28 +1173,114 @@ function scrollToWeeklyOutlook() {
 // DYNAMIC ORGANIZATIONS DROPDOWN
 // ============================================
 
-async function loadOrganizationsDropdown() {
-    const dropdownMenu = document.getElementById('orgsDropdownMenu');
-    if (!dropdownMenu) return;
-    dropdownMenu.innerHTML = '<div class="loading-dropdown">⏳ Loading...</div>';
+// ============================================
+// HELPER FUNCTION: DECODE HTML ENTITIES
+// ============================================
+
+function decodeHtmlEntities(text) {
+    if (!text) return '';
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = text;
+    return textarea.value;
+}
+
+// ============================================
+// ORGANIZATIONS
+// ============================================
+
+async function fetchOrganizations() {
     try {
         const response = await fetch(`${API_URL}/organizations`);
         if (!response.ok) throw new Error('Failed to fetch organizations');
         const organizations = await response.json();
+        displayOrganizations(organizations);
+    } catch (error) {
+        console.error('Error fetching organizations:', error);
+        displayFallbackOrganizations();
+    }
+}
+
+function displayOrganizations(organizations) {
+    const grid = document.getElementById('orgsGrid');
+    if (!grid) return;
+    
+    if (organizations.length === 0) {
+        grid.innerHTML = '<div class="org-card"><p>No organizations yet. Check back soon!</p></div>';
+        return;
+    }
+    
+    let html = '';
+    for (let i = 0; i < organizations.length; i++) {
+        const org = organizations[i];
+        
+        // Decode HTML entities like &nbsp; to spaces
+        const decodedName = decodeHtmlEntities(org.name);
+        
+        // Strip HTML tags for the card preview (keep plain text)
+        const plainTextDesc = org.description.replace(/<[^>]*>/g, '');
+        const shortDesc = plainTextDesc.length > 80 ? plainTextDesc.substring(0, 80) + '...' : plainTextDesc;
+        
+        html += `
+            <div class="org-card">
+                <div class="org-icon">${org.icon || '📌'}</div>
+                <h3 class="org-name">${escapeHtml(decodedName)}</h3>
+                <p class="org-meeting">📅 ${escapeHtml(org.meeting)}</p>
+                <div class="org-description">${escapeHtml(shortDesc)}</div>
+                <button class="learn-more-org-btn" onclick="openOrgProfile('${org._id}')">Learn More →</button>
+            </div>
+        `;
+    }
+    grid.innerHTML = html;
+}
+
+function openOrgProfile(orgId) {
+    if (orgId) {
+        window.location.href = `organization.html?id=${orgId}`;
+    }
+}
+
+function displayFallbackOrganizations() {
+    const grid = document.getElementById('orgsGrid');
+    if (!grid) return;
+    grid.innerHTML = '<div class="org-card"><p>Unable to load organizations. Please refresh.</p></div>';
+}
+
+// ============================================
+// ORGANIZATIONS DROPDOWN
+// ============================================
+
+async function loadOrganizationsDropdown() {
+    const dropdownMenu = document.getElementById('orgsDropdownMenu');
+    if (!dropdownMenu) return;
+    
+    dropdownMenu.innerHTML = '<div class="loading-dropdown">⏳ Loading...</div>';
+    
+    try {
+        const response = await fetch(`${API_URL}/organizations`);
+        if (!response.ok) throw new Error('Failed to fetch organizations');
+        const organizations = await response.json();
+        
         if (organizations.length === 0) {
-            dropdownMenu.innerHTML = '<a href="#">No organizations yet</a>';
+            dropdownMenu.innerHTML = '<a href="index.html#organizations">No organizations yet</a>';
             return;
         }
+        
         let html = '';
         for (let i = 0; i < organizations.length; i++) {
-            html += `<a href="organization.html?id=${organizations[i]._id}">🏛️ ${escapeHtml(organizations[i].name)}</a>`;
+            const org = organizations[i];
+            // Replace &nbsp; with space
+            let cleanName = org.name.replace(/&nbsp;/g, ' ');
+            cleanName = cleanName.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+            html += `<a href="organization.html?id=${org._id}">🏛️ ${cleanName}</a>`;
         }
         dropdownMenu.innerHTML = html;
+        
     } catch (error) {
         console.error('Error loading organizations dropdown:', error);
         dropdownMenu.innerHTML = '<a href="index.html#organizations">📋 View All Organizations</a>';
     }
 }
+
 loadOrganizationsDropdown();
 
 // ============================================
@@ -1261,7 +1351,26 @@ function openWeeklyOutlookModal() {
             alert('Unable to load weekly outlook.');
         });
 }
+// ============================================
+// OPEN GOOGLE MAPS
+// ============================================
 
+function openGoogleMaps() {
+    // Replace these coordinates with your actual church location
+    const churchName = "Gethsemane Methodist Church";
+    const address = "Gethsemane Methodist Society, Baatsona";
+    const latitude = 5.62571;  // Replace with actual latitude
+    const longitude = -0.008505; // Replace with actual longitude
+    
+    // Option 1: Search by address (most reliable)
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+    
+    // Option 2: Use coordinates (more precise - uncomment if you have coordinates)
+    // const mapsUrl = `https://www.google.com/maps/place/${latitude},${longitude}`;
+    
+    // Open in new tab
+    window.open(mapsUrl, '_blank');
+}
 // ============================================
 // CALL ALL FETCH FUNCTIONS ON PAGE LOAD
 // ============================================

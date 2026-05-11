@@ -74,6 +74,62 @@
         .photo-info { padding: 8px; font-size: 12px; text-align: center; background: white; }
         .bulk-delete-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #e74c3c; color: white; padding: 12px 25px; border-radius: 50px; display: flex; gap: 15px; align-items: center; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 1000; }
         .bulk-delete-bar button { background: white; color: #e74c3c; border: none; padding: 5px 15px; border-radius: 20px; cursor: pointer; }
+
+        /* Custom Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        .modal-container {
+            background: white;
+            border-radius: 12px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: modalSlideIn 0.2s ease;
+        }
+        @keyframes modalSlideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-header {
+            padding: 20px 20px 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .modal-body {
+            padding: 20px;
+            line-height: 1.5;
+        }
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .modal-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .modal-btn-primary { background: #4CAF50; color: white; }
+        .modal-btn-danger { background: #e74c3c; color: white; }
+        .modal-btn-secondary { background: #95a5a6; color: white; }
+        .modal-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-top: 10px; }
+
+
     </style>
 </head>
 <body>
@@ -118,7 +174,21 @@
 
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
-    const API_URL = 'https://church-backend-h2ch.onrender.com/api';
+    // ============================================
+// API CONFIGURATION
+// ============================================
+
+// Change this to 'local' or 'production' to switch environments
+const ENVIRONMENT = 'local'; // 'local' or 'production'
+
+const API_URLS = {
+    local: 'http://localhost:5001/api',
+    production: 'https://church-backend-h2ch.onrender.com/api'
+};
+
+const API_URL = API_URLS[ENVIRONMENT];
+
+console.log(`🔧 Admin using ${ENVIRONMENT} environment: ${API_URL}`);
     const ADMIN_PASSWORD = 'geth2026';
 
     let currentSection = 'gallery';
@@ -492,7 +562,8 @@
     }
 
     async function deleteAnnouncement(id) {
-        if (!confirm('Delete this announcement?')) return;
+        const confirmed = await confirm('Delete this announcement?');
+        if (!confirmed) return
         await fetch(`${API_URL}/announcements/${id}`, { method: 'DELETE' });
         loadAnnouncements();
         showSuccess('Deleted!');
@@ -624,7 +695,9 @@
     }
 
     async function deleteEvent(id) {
-        if (!confirm('Delete this event?')) return;
+        const confirmed = await confirm('Delete this Event?');
+        if (!confirmed) return;
+        
         await fetch(`${API_URL}/events/${id}`, { method: 'DELETE' });
         loadEvents();
         showSuccess('Event deleted!');
@@ -1015,7 +1088,8 @@ async function updateWeeklyOutlook() {
     }
 
     async function deleteBlog(id) {
-        if (!confirm('Delete this blog post?')) return;
+        const confirmed = await confirm('Delete this blog post?');
+        if (!confirmed) return;
         await fetch(`${API_URL}/blogs/${id}`, { method: 'DELETE' });
         loadBlogs();
         showSuccess('Blog deleted!');
@@ -1214,7 +1288,8 @@ async function updateWeeklyOutlook() {
     }
 
     async function deleteOrganization(id) {
-        if (!confirm('Delete this organization?')) return;
+        const confirmed = await confirm('Delete this organization?');
+        if (!confirmed) return;
         await fetch(`${API_URL}/organizations/${id}`, { method: 'DELETE' });
         loadOrganizations();
         showSuccess('Organization deleted!');
@@ -1337,7 +1412,8 @@ async function updateWeeklyOutlook() {
     }
 
     async function deleteLeader(id) {
-        if (!confirm('Delete this leader?')) return;
+        const confirmed = await confirm('Delete this leader?');
+        if (!confirmed) return;
         await fetch(`${API_URL}/leaders/${id}`, { method: 'DELETE' });
         loadLeaders();
         showSuccess('Leader deleted!');
@@ -1506,7 +1582,8 @@ async function loadContacts() {
 }
 
 async function deleteContact(id) {
-    if (!confirm('Delete this contact submission?')) return;
+    const confirmed = await confirm('Delete this contact submission?');
+    if (!confirmed) return;
     try {
         await fetch(`${API_URL}/contacts/${id}`, { method: 'DELETE' });
         loadContacts();
@@ -1693,6 +1770,90 @@ async function updateAboutUs() {
         alert('Error: ' + error.message);
     }
 }
+
+// Custom Modal System
+function showModal(options) {
+    return new Promise((resolve) => {
+        const { title, message, type = 'alert', inputPlaceholder = '' } = options;
+        
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+        
+        let inputHtml = '';
+        if (type === 'prompt') {
+            inputHtml = `<input type="text" id="modalInput" class="modal-input" placeholder="${inputPlaceholder}">`;
+        }
+        
+        let buttonsHtml = '';
+        if (type === 'alert') {
+            buttonsHtml = `<button class="modal-btn modal-btn-primary" id="modalOkBtn">OK</button>`;
+        } else if (type === 'confirm') {
+            buttonsHtml = `
+                <button class="modal-btn modal-btn-secondary" id="modalCancelBtn">Cancel</button>
+                <button class="modal-btn modal-btn-primary" id="modalConfirmBtn">OK</button>
+            `;
+        } else if (type === 'prompt') {
+            buttonsHtml = `
+                <button class="modal-btn modal-btn-secondary" id="modalCancelBtn">Cancel</button>
+                <button class="modal-btn modal-btn-primary" id="modalConfirmBtn">OK</button>
+            `;
+        }
+        
+        overlay.innerHTML = `
+            <div class="modal-container">
+                <div class="modal-header">${title}</div>
+                <div class="modal-body">
+                    ${message}
+                    ${inputHtml}
+                </div>
+                <div class="modal-footer">
+                    ${buttonsHtml}
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        
+        const closeModal = (result) => {
+            overlay.remove();
+            resolve(result);
+        };
+        
+        if (type === 'alert') {
+            document.getElementById('modalOkBtn').onclick = () => closeModal(true);
+        } else if (type === 'confirm') {
+            document.getElementById('modalConfirmBtn').onclick = () => closeModal(true);
+            document.getElementById('modalCancelBtn').onclick = () => closeModal(false);
+        } else if (type === 'prompt') {
+            const input = document.getElementById('modalInput');
+            document.getElementById('modalConfirmBtn').onclick = () => closeModal(input.value);
+            document.getElementById('modalCancelBtn').onclick = () => closeModal(null);
+            input.focus();
+        }
+        
+        overlay.onclick = (e) => {
+            if (e.target === overlay && type !== 'prompt') closeModal(false);
+        };
+    });
+}
+
+    // Replace all native alerts with modals
+    window.alert = function(message) {
+        return showModal({ title: 'Notice', message, type: 'alert' });
+    };
+
+    window.confirm = function(message) {
+        return showModal({ title: 'Confirm', message, type: 'confirm' });
+    };
+
+    window.prompt = function(message, defaultValue = '') {
+        return showModal({ 
+            title: 'Input Required', 
+            message, 
+            type: 'prompt', 
+            inputPlaceholder: defaultValue 
+        });
+    };
 </script>
 
 </body>
