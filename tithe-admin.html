@@ -1558,7 +1558,7 @@
             <div class="list-card">
                 <div class="list-header">
                     <h3>📋 Failed SMS Messages</h3>
-                    <span style="font-size: 13px; color: #666;">Click "Edit Contact" to update member phone numbers</span>
+                    <span style="font-size: 13px; color: #666;">Click "Edit Contact" to update member's phone numbers</span>
                 </div>
                 <div class="table-container" style="overflow-x: auto; max-height: 500px; overflow-y: auto;">
                     <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
@@ -2425,7 +2425,7 @@ function showApp() {
         const banner = document.createElement('div'); 
         banner.id = 'classBanner'; 
         banner.className = 'class-banner';
-        banner.innerHTML = `<img src="images/logo.jpg" alt="Logo" onerror="this.style.display='none'"> 📘 You are viewing data for: <strong>${currentUser.bibleClass}</strong> (Class Leader - View Only)`;
+        banner.innerHTML = `<img src="Images/Logo.jpg" alt="Logo" onerror="this.style.display='none'"> 📘 You are viewing data for: <strong>${currentUser.bibleClass}</strong> (Class Leader - View Only)`;
         document.getElementById('appScreen').insertBefore(banner, document.getElementById('appScreen').firstChild);
         
         // Lock class selectors
@@ -2922,7 +2922,7 @@ async function exportHistoryToPDF() {
         
         let html = `<div id="pdfExportContent" style="padding: 20px; font-family: 'Times New Roman', serif;">
             <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:15px; margin-bottom:20px;">
-                <img src="images/logo.jpg" style="width: 80px; height: auto; margin-bottom: 10px;" onerror="this.style.display='none'">
+                <img src="Images/Logo.jpg" style="width: 80px; height: auto; margin-bottom: 10px;" onerror="this.style.display='none'">
                 <h1 style="margin: 0;">GETHSEMANE METHODIST CHURCH</h1>
                 <p style="margin: 5px 0;">Baatsona - Tema Spintex Circuit</p>
                 <h3 style="margin: 15px 0 10px 0;">Payment History Report</h3>
@@ -2973,9 +2973,7 @@ async function exportHistoryToPDF() {
     }
 }
 
-// ============================================
-// FAILED SMS - WORKING VERSION
-// ============================================
+
 
 // ============================================
 // FAILED SMS - COMPLETE WITH CLASS LEADER RESTRICTIONS
@@ -3729,7 +3727,7 @@ async function generateReport() {
                 </style>
                 
                 <div class="report-header">
-                    <img src="images/logo.jpg" alt="Church Logo" onerror="this.style.display='none'">
+                    <img src="Images/Logo.jpg" alt="Church Logo" onerror="this.style.display='none'">
                     <h1>GETHSEMANE METHODIST CHURCH</h1>
                     <p>Baatsona - Tema Spintex Circuit</p>
                     <h3 style="margin: 8px 0;">Tithe Payment Report</h3>
@@ -6288,7 +6286,7 @@ function exportTitheAnalysisToPDF() {
     const header = document.createElement('div');
     header.className = 'report-header';
     header.innerHTML = `
-        <img src="images/logo.jpg" onerror="this.style.display='none'">
+        <img src="Images/Logo.jpg" onerror="this.style.display='none'">
         <h1>GETHSEMANE METHODIST CHURCH</h1>
         <p>Baatsona - Tema Spintex Circuit</p>
         <h3>Tithe Member Status Analysis Report</h3>
@@ -6716,7 +6714,7 @@ async function refreshClassLeaderReport() {
         let html = `
 <div id="reportContent" style="padding: 10px; font-family: 'Times New Roman', Times, serif; background: white;">
     <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px;">
-        <img src="images/logo.jpg" alt="Church Logo" style="width: 50px; height: auto; margin-bottom: 5px;" onerror="this.style.display='none'">
+        <img src="Images/Logo.jpg" alt="Church Logo" style="width: 50px; height: auto; margin-bottom: 5px;" onerror="this.style.display='none'">
         <h1 style="margin: 5px 0; font-size: 20px;">GETHSEMANE METHODIST CHURCH</h1>
         <p style="margin: 2px 0; font-size: 11px;">Baatsona - Tema Spintex Circuit</p>
         <p style="margin: 5px 0; font-size: 13px; font-weight: bold;">${currentUser.bibleClass} Class - Tithe Report</p>
